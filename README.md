@@ -39,3 +39,11 @@ You can download the dataset, which will be saved in `parquet_files`.
 ``` bash
 python script/parse.py
 ```
+
+### Ingest data to DuckDB
+
+Once the dataset is ready you can ingest them to `us_campaign_finance.duckdb`.
+
+``` bash
+python script/ingest.py
+```
