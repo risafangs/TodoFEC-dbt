@@ -1,0 +1,15 @@
+us_campaign_finance:
+  outputs:
+    dev:
+      type: duckdb
+      path: us_campaign_finance.duckdb
+      schema: dev
+      threads: 1
+
+    prod:
+      type: duckdb
+      path: us_campaign_finance.duckdb
+      schema: main
+      threads: 4
+
+  target: dev

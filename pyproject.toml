@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "us-campaign-finance"
+version = "0.1.0"
+description = ""
+authors = ["DataRecce"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12,<3.13"
+dbt-duckdb = "^1.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
