@@ -4,6 +4,9 @@ target/
 dbt_packages/
 logs/
 
+# python
+**/__pycache__
+
 # pyenv
 .python-version
 

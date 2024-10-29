@@ -67,31 +67,39 @@ def ingest_parquet_to_duckdb(
             # Create new table from the relation
             new_data.create(full_table_name)
             print(f"Created new table {full_table_name}")
-            rows_added = conn.execute(f"SELECT COUNT(*) FROM {full_table_name}").fetchone()[0]
+            rows_added = conn.execute(
+                f"SELECT COUNT(*) FROM {full_table_name}"
+            ).fetchone()[0]
             print(f"Rows added: {rows_added}")
-            
+
         else:
             # Get existing data as relation
             existing_data = conn.table(full_table_name)
-            rows_before = conn.execute(f"SELECT COUNT(*) FROM {full_table_name}").fetchone()[0]
-            
+            rows_before = conn.execute(
+                f"SELECT COUNT(*) FROM {full_table_name}"
+            ).fetchone()[0]
+
             # Convert new data to pandas for easier comparison
             new_df = new_data.to_df()
             existing_df = existing_data.to_df()
-            
+
             # Find unique rows (not in existing data)
             merged_df = pd.concat([existing_df, new_df]).drop_duplicates(keep=False)
-            unique_rows = merged_df.iloc[existing_df.shape[0]:]
-            
+            unique_rows = merged_df.iloc[existing_df.shape[0] :]
+
             if not unique_rows.empty:
                 # Register temporary view for the unique rows
                 conn.register("unique_rows_view", unique_rows)
                 # Append unique rows to existing table
-                conn.execute(f"INSERT INTO {full_table_name} SELECT * FROM unique_rows_view")
+                conn.execute(
+                    f"INSERT INTO {full_table_name} SELECT * FROM unique_rows_view"
+                )
                 # Clean up temporary view
                 conn.execute("DROP VIEW IF EXISTS unique_rows_view")
-            
-            rows_after = conn.execute(f"SELECT COUNT(*) FROM {full_table_name}").fetchone()[0]
+
+            rows_after = conn.execute(
+                f"SELECT COUNT(*) FROM {full_table_name}"
+            ).fetchone()[0]
             rows_added = rows_after - rows_before
 
         # Commit the transaction
@@ -105,4 +113,7 @@ for metadata in METADATA:
     year = metadata["year"]
     category = metadata["category"]
     parquet_file = f"{PARQUERT_DIR}/{category}_{year}.parquet"
-    ingest_parquet_to_duckdb(parquet_file=parquet_file, table_name=category)
+    table_name = f"raw_{category}"
+    ingest_parquet_to_duckdb(
+        parquet_file=parquet_file, table_name=table_name, schema="raw"
+    )
