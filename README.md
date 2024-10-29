@@ -47,3 +47,11 @@ Once the dataset is ready you can ingest them to `us_campaign_finance.duckdb`.
 ``` bash
 python script/ingest.py
 ```
+
+### Running dbt
+
+Once you've updated any models you can run dbt _within the poetry environment_ by simply calling:
+
+```bash
+dbt run
+```
