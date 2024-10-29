@@ -3,3 +3,9 @@
 target/
 dbt_packages/
 logs/
+
+# pyenv
+.python-version
+
+# data
+parquet_files
