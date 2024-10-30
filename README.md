@@ -1,10 +1,42 @@
-# US Campaign Finance
+# Standardized Data Project Using US Election Campaign Finance Dataset
 
 In the front-end world, **TodoMVC** is a well-known example for comparing JavaScript frameworks by implementing the same to-do app in multiple frameworks. This project seeks to bring a similar concept to data processing and analytics.
 
 We aim to create a standardized set of tasks using the **US Election Campaign Finance Dataset**, enabling users to compare different tools and frameworks for data processing and analysis.
 
 If you're interested in contributing, check out the detailed narrative and sign-up section in the [project narrative document](https://docs.google.com/document/d/1K44XHV_NpfUe2R2PVBJNRkT-arZtKp4_SCzer8Nmg-Q/edit?tab=t.0).
+
+## Why the US Election Campaign Finance Dataset?
+
+1. **Rich Data**: The dataset includes numbers, categories, dates, and text, ideal for testing different data frameworks.
+2. **Public and Relevant**: A public dataset with significant real-world importance for understanding money in politics.
+3. **Scalable**: Large enough to test performance and scalability.
+4. **Complex Tasks**: Suitable for advanced tasks like network analysis, forecasting, and natural language processing.
+
+## Project Objectives
+
+### Proposed Data Tasks
+
+- Load the .fec dataset and make it accessible.
+- Basic dimension modeling.
+- Basic aggregated results.
+- Add a semantic model.
+- Visualize results.
+- Implement CI/CD.
+
+### Proposed Analytics Tasks
+
+- Identify PACs, their funders, and expenditures in swing states for both sides.
+- Analyze campaign expenditures by candidate and locale.
+- Track top industries donating to candidates by party.
+- Explore amounts raised, expenditures by date, and behavioral patterns of funders.
+
+## Resources & References
+
+- [FEC Data Browse](https://www.fec.gov/data/browse-data/?tab=bulk-data)
+- [Mining FEC Data PDF](https://s3.amazonaws.com/ire16/campaign-finance/MiningFECData.pdf)
+- [FEC Parser to Arrow & Parquet](https://github.com/NickCrews/feco3)
+- [Sample Analytics Project](https://medium.com/@harshithayentra.1997/federal-election-commission-fec-prediction-analysis-27cde08f1531)
 
 ## Quickstart
 
