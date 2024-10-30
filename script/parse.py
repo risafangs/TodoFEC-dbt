@@ -1,14 +1,35 @@
 import requests
 import os
 import tempfile
+import re
 import shutil
+import subprocess
 import zipfile
-from urllib.parse import urlparse
+from datetime import datetime
+from pathlib import Path
+from pytz import timezone
 from typing import Optional
+from urllib.parse import urlparse
 
+import boto3
 import pandas as pd
+from botocore import UNSIGNED
+from botocore.client import Config
 
-from config import PARQUERT_DIR, BASE_URL, METADATA, COLUMNS
+from config import (
+    PARQUERT_DIR,
+    BASE_URL,
+    METADATA,
+    COLUMNS,
+    S3_BUCKET_NAME,
+    S3_REGION_NAME,
+    ELECTRONIC_FEC_PREFIX,
+)
+
+
+s3_client = boto3.client(
+    "s3", region_name=S3_REGION_NAME, config=Config(signature_version=UNSIGNED)
+)
 
 
 def download_zip(
@@ -77,14 +98,15 @@ def download_zip(
 
 
 def extract_zip(
-    zip_path: str, extract_path: Optional[str] = None, delete_zip: bool = True
+    zip_path: str, extract_dir: Optional[str] = None, delete_zip: bool = True
 ) -> str:
     """
-    Extract a ZIP file to a specified directory.
+    Extract a ZIP file to a specified directory, moving files from the root folder
+    directly into the extract path.
 
     Args:
         zip_path (str): Path to the ZIP file
-        extract_path (str, optional): Directory where files should be extracted.
+        extract_dir (str, optional): Directory where files should be extracted.
             If not provided, a temporary directory will be created.
         delete_zip (bool): Whether to delete the ZIP file after extraction
 
@@ -94,31 +116,79 @@ def extract_zip(
     Raises:
         zipfile.BadZipFile: If the file is not a valid ZIP file
         IOError: If there's an error during extraction
+        ValueError: If malicious paths are detected in the ZIP
     """
     try:
-        if extract_path is None:
+        if extract_dir is None:
             # Create a temporary directory for extraction
-            extract_path = tempfile.mkdtemp()
+            extract_dir = tempfile.mkdtemp()
         else:
             # Create extraction directory if it doesn't exist
-            os.makedirs(extract_path, exist_ok=True)
+            os.makedirs(extract_dir, exist_ok=True)
 
-        # Extract the ZIP file
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            # Check for malicious paths (path traversal attacks)
-            for zip_info in zip_ref.filelist:
-                if os.path.isabs(zip_info.filename) or ".." in zip_info.filename:
-                    raise ValueError(
-                        f"Malicious path detected in ZIP: {zip_info.filename}"
-                    )
-            # Extract all files
-            zip_ref.extractall(extract_path)
+        # Create a temporary directory for initial extraction
+        temp_extract_dir = tempfile.mkdtemp()
+
+        try:
+            # Extract the ZIP file to temporary location
+            with zipfile.ZipFile(zip_path, "r") as zip_ref:
+                # Check for malicious paths (path traversal attacks)
+                for zip_info in zip_ref.filelist:
+                    if os.path.isabs(zip_info.filename) or ".." in zip_info.filename:
+                        raise ValueError(
+                            f"Malicious path detected in ZIP: {zip_info.filename}"
+                        )
+                # Extract all files to temporary location
+                zip_ref.extractall(temp_extract_dir)
+
+            # Get the contents of the temporary directory
+            temp_contents = os.listdir(temp_extract_dir)
+            print(temp_contents)
+
+            if len(temp_contents) == 1 and os.path.isdir(
+                os.path.join(temp_extract_dir, temp_contents[0])
+            ):
+                # If there's a single folder, move its contents to extract_dir
+                root_folder = os.path.join(temp_extract_dir, temp_contents[0])
+                for item in os.listdir(root_folder):
+                    source = os.path.join(root_folder, item)
+                    destination = os.path.join(extract_dir, item)
+
+                    # If destination exists, remove it first
+                    if os.path.exists(destination):
+                        if os.path.isdir(destination):
+                            shutil.rmtree(destination)
+                        else:
+                            os.remove(destination)
+
+                    # Move the item to the final destination
+                    shutil.move(source, destination)
+            else:
+                # If it's not a single folder, move everything directly
+                for item in temp_contents:
+                    source = os.path.join(temp_extract_dir, item)
+                    destination = os.path.join(extract_dir, item)
+
+                    # If destination exists, remove it first
+                    if os.path.exists(destination):
+                        if os.path.isdir(destination):
+                            shutil.rmtree(destination)
+                        else:
+                            os.remove(destination)
+
+                    # Move the item to the final destination
+                    shutil.move(source, destination)
+
+        finally:
+            # Clean up temporary directory
+            if os.path.exists(temp_extract_dir):
+                shutil.rmtree(temp_extract_dir)
 
         # Delete the ZIP file if requested
         if delete_zip:
             os.remove(zip_path)
 
-        return extract_path
+        return extract_dir
 
     except zipfile.BadZipFile as e:
         raise zipfile.BadZipFile(f"Invalid ZIP file: {str(e)}")
@@ -126,22 +196,26 @@ def extract_zip(
         raise IOError(f"Error during extraction: {str(e)}")
 
 
-def list_txt_files(directory):
+def list_files_by_type(directory, file_type):
     """
-    List full paths of all .txt files in a given directory.
+    List full paths of all files with a specific extension in a given directory.
 
     Args:
         directory (str): The directory path to search
+        file_type (str): File extension to search for (e.g. 'txt', 'pdf', 'csv')
 
     Returns:
-        list: List of full paths to .txt files
+        list: List of full paths to files with the specified extension
     """
     try:
-        txt_files = []
+        # Ensure file_type starts with a period
+        extension = f".{file_type.lower().strip('.')}"
+
+        matching_files = []
         for file in os.listdir(directory):
-            if file.endswith(".txt"):
-                txt_files.append(os.path.join(directory, file))
-        return txt_files
+            if file.lower().endswith(extension):
+                matching_files.append(os.path.join(directory, file))
+        return matching_files
     except Exception as e:
         print(f"Error accessing directory: {str(e)}")
         return []
@@ -178,23 +252,255 @@ def save_in_parquet(input_path, column_names, output_path):
         return False
 
 
+def file_exists_and_complete(local_path, expected_size):
+    """
+    Check if file exists and has the expected size
+    """
+    if not os.path.exists(local_path):
+        return False
+    return os.path.getsize(local_path) == expected_size
+
+
+def download_s3_file(bucket_name, object_key, local_path, expected_size):
+    """
+    Download a file from S3 GovCloud bucket if it doesn't exist locally
+    """
+    try:
+        if file_exists_and_complete(local_path, expected_size):
+            print(f"Skipping {object_key} - file already exists")
+            return True
+
+        print(f"Downloading {object_key} to {local_path}")
+        s3_client.download_file(bucket_name, object_key, local_path)
+
+        # Verify the downloaded file size
+        if file_exists_and_complete(local_path, expected_size):
+            print(f"Successfully downloaded {object_key}")
+            return True
+        else:
+            print(f"Error: Downloaded file size mismatch for {object_key}")
+            return False
+
+    except Exception as e:
+        print(f"Error downloading file: {e}")
+        return False
+
+
+def get_date_from_filename(filename):
+    """
+    Extract date from filename like '<date>.zip'
+    Example: '20241029.zip' returns datetime(2024, 10, 29)
+    """
+    try:
+        # Use regex to match the date pattern
+        match = re.match(r"(\d{8})\.zip$", filename)
+        if match:
+            date_str = match.group(1)
+            return datetime.strptime(date_str, "%Y%m%d")
+        return None
+    except ValueError:
+        return None
+
+
+def list_and_download_files_after_date(
+    bucket_name, start_date, prefix="", download_dir="downloads"
+):
+    """
+    List and download all .zip files with date-based names after the specified start date,
+    skipping files that already exist locally
+
+    Args:
+        bucket_name (str): Name of the S3 bucket
+        start_date (datetime or str): Starting date to filter files (format: YYYYMMDD)
+        prefix (str): Prefix to filter objects (folder path)
+        download_dir (str): Local directory to save downloaded files
+    """
+    try:
+        # Ensure download directory exists
+        os.makedirs(download_dir, exist_ok=True)
+
+        # Convert start_date to datetime if it's string
+        if isinstance(start_date, str):
+            start_date = datetime.strptime(start_date, "%Y%m%d")
+
+        print(f"Looking for files after {start_date.strftime('%Y-%m-%d')}...")
+
+        paginator = s3_client.get_paginator("list_objects_v2")
+        params = {"Bucket": bucket_name}
+        if prefix:
+            params["Prefix"] = prefix
+
+        files_to_process = []
+        total_size = 0
+
+        # Collect all matching files
+        for page in paginator.paginate(**params):
+            if "Contents" in page:
+                for obj in page["Contents"]:
+                    filename = os.path.basename(obj["Key"])
+
+                    # Check if file matches '<date>.zip' pattern
+                    if not filename.endswith(".zip"):
+                        continue
+
+                    file_date = get_date_from_filename(filename)
+                    if file_date and file_date >= start_date:
+                        local_path = os.path.join(download_dir, filename)
+
+                        files_to_process.append(
+                            {
+                                "key": obj["Key"],
+                                "date": file_date,
+                                "size": obj["Size"],
+                                "local_path": local_path,
+                                "exists": file_exists_and_complete(
+                                    local_path, obj["Size"]
+                                ),
+                            }
+                        )
+
+                        if not file_exists_and_complete(local_path, obj["Size"]):
+                            total_size += obj["Size"]
+
+        # Sort files by date
+        files_to_process.sort(key=lambda x: x["date"])
+
+        if not files_to_process:
+            print("No matching files found.")
+            return []
+
+        # Count files that need to be downloaded
+        files_to_download = [f for f in files_to_process if not f["exists"]]
+
+        print(f"\nFound {len(files_to_process)} matching files:")
+        print(f"- {len(files_to_download)} files need to be downloaded")
+        print(
+            f"- {len(files_to_process) - len(files_to_download)} files already exist locally"
+        )
+
+        if files_to_download:
+            print(
+                f"\nTotal download size: {total_size:,} bytes ({total_size / (1024*1024*1024):.2f} GB)"
+            )
+            print("\nFiles to download:")
+            for file in files_to_download:
+                print(f"- {file['key']}")
+                print(f"  Date: {file['date'].strftime('%Y-%m-%d')}")
+                print(f"  Size: {file['size']:,} bytes")
+
+            # Confirm download if size is significant
+            total_gb = total_size / (1024 * 1024 * 1024)
+            if total_gb > 1:
+                response = input(
+                    f"\nThis will download {total_gb:.2f} GB of data. Continue? (y/n): "
+                )
+                if response.lower() != "y":
+                    print("Download cancelled.")
+                    return []
+        else:
+            print("\nAll files already exist locally. No downloads needed.")
+            return [f["local_path"] for f in files_to_process]
+
+        # Download files
+        print("\nStarting downloads...")
+        downloaded_files = []
+        skipped_files = []
+
+        for file in files_to_process:
+            if file["exists"]:
+                skipped_files.append(file["local_path"])
+                continue
+
+            if download_s3_file(
+                bucket_name, file["key"], file["local_path"], file["size"]
+            ):
+                downloaded_files.append(file["local_path"])
+
+        print("\nDownload summary:")
+        print(f"- Total files processed: {len(files_to_process)}")
+        print(f"- Files skipped (already existed): {len(skipped_files)}")
+        print(f"- Files downloaded: {len(downloaded_files)}")
+        print(f"- Download directory: {os.path.abspath(download_dir)}")
+
+        return downloaded_files + skipped_files
+
+    except Exception as e:
+        print(f"Error processing files: {e}")
+        return []
+
+
+def parse_statements_and_summary():
+    for metadata in METADATA:
+        year = metadata["year"]
+        category = metadata["category"]
+        url = f'{BASE_URL}{metadata["remainder"]}'
+
+        # Download and extract to temp location
+        zip_path = download_zip(url, use_temp=True)
+        extracted_path = extract_zip(zip_path, category)
+        txt_files = list_files_by_type(extracted_path, "txt")
+
+        # Convert and save in Parquet
+        columns = COLUMNS[category]
+        parquet_file = f"{PARQUERT_DIR}/{category}_{year}.parquet"
+        save_in_parquet(txt_files[0], columns, parquet_file)
+        print(f"Successfully save {parquet_file}")
+
+        # Clean up temporary files when done
+        shutil.rmtree(extracted_path)
+
+
+def parse_electronic_filed_reports(start_date: str = None):
+    if start_date is None:
+        tz = timezone("EST")
+        start_date = datetime.now(tz).strftime("%Y%m%d")
+
+    print(f"Parse Electronic Filed Reports since {start_date}")
+
+    downloaded_files = list_and_download_files_after_date(
+        bucket_name=S3_BUCKET_NAME,
+        start_date=start_date,
+        prefix=ELECTRONIC_FEC_PREFIX,
+        download_dir="downloads/electronic_zip",
+    )
+
+    extract_dir = "downloads/electronic_fec"
+    csv_dir = "downloads/electronic_fec_csv"
+    parquet_dir = "downloads/electronic_fec_parquet"
+    for zip_file in downloaded_files:
+        extract_zip(zip_path=zip_file, extract_dir=extract_dir, delete_zip=False)
+
+        fec_files = list_files_by_type(extract_dir, "fec")
+        for fec_file in fec_files:
+            try:
+                print(f"Parsing {fec_file}")
+                fec_id = Path(fec_file).stem
+                output_dir = f"{csv_dir}/{fec_id}"
+
+                if not Path(output_dir).exists():
+                    subprocess.run(["fastfec", fec_file, csv_dir])
+
+                csv_files = list_files_by_type(output_dir, "csv")
+                for csv_file in csv_files:
+                    form_type = Path(csv_file).stem
+                    parquet_file = f"{parquet_dir}/{form_type}.parquet"
+
+                    df = pd.read_csv(csv_file)
+                    for column in df.columns:
+                        df[column] = df[column].astype(str)
+                    if not Path(parquet_file).exists():
+                        df.to_parquet(parquet_file)
+                    else:
+                        merged_df = pd.concat([pd.read_parquet(parquet_file), df])
+                        merged_df.to_parquet(parquet_file)
+
+                    print(f"Update {parquet_file}")
+
+            except Exception as e:
+                print(f"Error parsing {fec_file}: {e}")
+                pass
+
+
 os.makedirs(PARQUERT_DIR, exist_ok=True)
 
-for metadata in METADATA:
-    year = metadata["year"]
-    category = metadata["category"]
-    url = f'{BASE_URL}{metadata["remainder"]}'
-
-    # Download and extract to temp location
-    zip_path = download_zip(url, use_temp=True)
-    extracted_path = extract_zip(zip_path, category)
-    txt_files = list_txt_files(extracted_path)
-
-    # Convert and save in Parquet
-    columns = COLUMNS[category]
-    parquet_file = f"{PARQUERT_DIR}/{category}_{year}.parquet"
-    save_in_parquet(txt_files[0], columns, parquet_file)
-    print(f"Successfully save {parquet_file}")
-
-    # Clean up temporary files when done
-    shutil.rmtree(extracted_path)
+parse_electronic_filed_reports("20241020")

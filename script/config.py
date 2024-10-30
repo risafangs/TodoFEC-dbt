@@ -2,6 +2,9 @@ PARQUERT_DIR = "parquet_files"
 DUCKDB_PATH = "us_campaign_finance.duckdb"
 
 BASE_URL = "https://www.fec.gov/files/bulk-downloads/"
+S3_BUCKET_NAME = "cg-519a459a-0ea3-42c2-b7bc-fa1143481f74"
+S3_REGION_NAME = "us-gov-west-1"
+ELECTRONIC_FEC_PREFIX = "bulk-downloads/electronic/"
 
 METADATA = [
     dict(category="all_candidates", year="2024", remainder="2024/weball24.zip"),
@@ -76,7 +79,7 @@ COLUMNS = {
     "house_senate": [
         "CAND_ID",
         "CAND_NAME",
-       "CAND_ICI",
+        "CAND_ICI",
         "PTY_CD",
         "CAND_PTY_AFFILIATION",
         "TTL_RECEIPTS",

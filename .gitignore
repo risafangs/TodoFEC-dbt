@@ -12,4 +12,8 @@ logs/
 
 # data
 parquet_files
+downloads
 *.duckdb
+
+# MacOS
+**/.DS_Store
