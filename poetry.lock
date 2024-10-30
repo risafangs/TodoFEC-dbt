@@ -68,6 +68,44 @@ files = [
 dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
 
 [[package]]
+name = "boto3"
+version = "1.35.51"
+description = "The AWS SDK for Python"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "boto3-1.35.51-py3-none-any.whl", hash = "sha256:c922f6a18958af9d8af0489d6d8503b517029d8159b26aa4859a8294561c72e9"},
+    {file = "boto3-1.35.51.tar.gz", hash = "sha256:a57c6c7012ecb40c43e565a6f7a891f39efa990ff933eab63cd456f7501c2731"},
+]
+
+[package.dependencies]
+botocore = ">=1.35.51,<1.36.0"
+jmespath = ">=0.7.1,<2.0.0"
+s3transfer = ">=0.10.0,<0.11.0"
+
+[package.extras]
+crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
+
+[[package]]
+name = "botocore"
+version = "1.35.51"
+description = "Low-level, data-driven core of boto 3."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "botocore-1.35.51-py3-none-any.whl", hash = "sha256:4d65b00111bd12b98e9f920ecab602cf619cc6a6d0be6e5dd53f517e4b92901c"},
+    {file = "botocore-1.35.51.tar.gz", hash = "sha256:a9b3d1da76b3e896ad74605c01d88f596324a3337393d4bfbfa0d6c35822ca9c"},
+]
+
+[package.dependencies]
+jmespath = ">=0.7.1,<2.0.0"
+python-dateutil = ">=2.1,<3.0.0"
+urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
+
+[package.extras]
+crt = ["awscrt (==0.22.0)"]
+
+[[package]]
 name = "certifi"
 version = "2024.8.30"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -229,13 +267,13 @@ files = [
 
 [[package]]
 name = "dbt-adapters"
-version = "1.7.2"
+version = "1.8.0"
 description = "The set of adapter protocols and base functionality that supports integration with dbt-core"
 optional = false
 python-versions = ">=3.9.0"
 files = [
-    {file = "dbt_adapters-1.7.2-py3-none-any.whl", hash = "sha256:7c3df8a92bfdbe52e38f42ad07d0c383c68a42611546356c49e26e9422a395e1"},
-    {file = "dbt_adapters-1.7.2.tar.gz", hash = "sha256:dc2c82fc36da27ab0d444584063d3aac66f5b65b50f90105bb9e3f4b04043155"},
+    {file = "dbt_adapters-1.8.0-py3-none-any.whl", hash = "sha256:ced398d50bd4550c2dafb8956ead8a52e6444c049eaa6b213f8cbe896f80c115"},
+    {file = "dbt_adapters-1.8.0.tar.gz", hash = "sha256:4b269c6574493701acf4fd185b29b05f8ed396bff9ba61ba74c80931ba80c7c5"},
 ]
 
 [package.dependencies]
@@ -457,6 +495,73 @@ files = [
 ]
 
 [[package]]
+name = "feco3"
+version = "0.5.0"
+description = "A Rust-backed Python library for parsing .fec files."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "feco3-0.5.0-cp310-cp310-macosx_10_7_x86_64.whl", hash = "sha256:e6d8db94a1df5e2e71506a5b9bd6215f877ffb0457abefd0a40cd6b25d979122"},
+    {file = "feco3-0.5.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:d306f9f97dce08d8ca17b18d3d9779d627922367db2f4fc128ce56fa8b63a46e"},
+    {file = "feco3-0.5.0-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:ac47ba02bc2d0c73d584d55cebd98fdafe3a6149a2563a41367647598b2e817d"},
+    {file = "feco3-0.5.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7c24ffa8d7623c95abfc9ca50c13f972eddb38d51323b11f2f4c6266c551cc2e"},
+    {file = "feco3-0.5.0-cp310-cp310-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:bf91a7baf361d53d791d8984fc06ba98dafc488be481bc74c1bbab148e606741"},
+    {file = "feco3-0.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:40560964068f791e19448c5432c4adc26b543d5c4c0ee79bcfd82d755c4fbc7e"},
+    {file = "feco3-0.5.0-cp310-none-win32.whl", hash = "sha256:813ad135dae9053c77ad36d224384103470edebd742f215b40791852abecdb10"},
+    {file = "feco3-0.5.0-cp310-none-win_amd64.whl", hash = "sha256:693e97e488308f3fb44eb1c873f2df75650ad86515a95c3ddc49363563a16995"},
+    {file = "feco3-0.5.0-cp311-cp311-macosx_10_7_x86_64.whl", hash = "sha256:06796b06f807b48f3dea0c9ec5da2f372c9d40b1726d62bf9d36f8def27a0254"},
+    {file = "feco3-0.5.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:4fe75738c518674cd7f77c6fa8e9d879b67de95a8927b581df015fdf7cf6eb43"},
+    {file = "feco3-0.5.0-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:a0e08bf4d58844503f0a54e033f5405a05434f33c398055ba0772d1c80ce9078"},
+    {file = "feco3-0.5.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:23d570aa008d473d5834445b71f552670719b6f3eaada8ba79cdbbf909566ee5"},
+    {file = "feco3-0.5.0-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d6b46dc9c300effacea56958e2309c1c5053d4237f82dc7f6446952b58a34e92"},
+    {file = "feco3-0.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7c12918a5b895ab8b2769f88d986570260e3c49d02557b75ef525862b52a8cc4"},
+    {file = "feco3-0.5.0-cp311-none-win32.whl", hash = "sha256:8fd7eabae5cbaf5aa3146296d688da1a428e71562ad3beda55778cf4d06cef3d"},
+    {file = "feco3-0.5.0-cp311-none-win_amd64.whl", hash = "sha256:bed43c54ebae0c0cee522e73b5027cbdf1fa0590c7fb2689402fdf9e4ad31b16"},
+    {file = "feco3-0.5.0-cp312-cp312-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:51f0b1b89234fa6aedeb1f5321a5e9fd0039c7ba98539ba8efda8d08dfc1fe56"},
+    {file = "feco3-0.5.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:18bf218d85878bce31d1533b683647fc3eb56d905a3a8695f06a78c0cdaab99c"},
+    {file = "feco3-0.5.0-cp312-cp312-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:34062c7e81e66584ef603c51e200cbda823e1cf2a659220701a072d22dfe2e97"},
+    {file = "feco3-0.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:37bae0fb8921dff27ec0205c36a49f0b04175b2aa84e87714fb4bb5ff294a9ac"},
+    {file = "feco3-0.5.0-cp37-cp37m-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:ae8461febfa6603ce3aa04b21823c5498ce5b473209e3010c41ba3c53c1c525a"},
+    {file = "feco3-0.5.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c0299a0573634f9dc05a54f423e40c506500f336048f33def1a5d186472f20a6"},
+    {file = "feco3-0.5.0-cp37-cp37m-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:baa939366b423480768994e865ecce5db671a40b85d99395334a004c2c276243"},
+    {file = "feco3-0.5.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d63e6436f35c52b51e2dc55305c93a74465f7e240960e4bc84612a65e9c6db19"},
+    {file = "feco3-0.5.0-cp37-none-win32.whl", hash = "sha256:cde96a707fb1ec15a9207cb37dc321016827de8f37745981678592758ec39732"},
+    {file = "feco3-0.5.0-cp37-none-win_amd64.whl", hash = "sha256:48b0bc966a70f05b85b10600e75e40fcf2e90b53c68b3c7791f797d415b9eb88"},
+    {file = "feco3-0.5.0-cp38-cp38-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:e32ef1f3993dac24c5723f54cc12052a9152977a6e7a4285848a6575c7973c53"},
+    {file = "feco3-0.5.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:190f4631c759e5df06845b76b6826f8b5140c4b8ef42a691bda2f63c1573b899"},
+    {file = "feco3-0.5.0-cp38-cp38-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:05afe1925c94f7c2fe62816bcc1fa074679649ab9c85ce599ddc1209f3b3b013"},
+    {file = "feco3-0.5.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1d464450e3acc638d59ce8d241ef7b86d13f5035e4429ce70fa0b91136bd194f"},
+    {file = "feco3-0.5.0-cp38-none-win32.whl", hash = "sha256:97a158efbb30410ccf4c95c0ddc5e5f2db6c3da1a7b6cd63df03432399cf87b7"},
+    {file = "feco3-0.5.0-cp38-none-win_amd64.whl", hash = "sha256:5bcb01989048fe30413dff7e329fa54fed8be8d8422ee0da913958ed02143a2a"},
+    {file = "feco3-0.5.0-cp39-cp39-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:00482a1042f8864b8e6cd933a7209269ba35b56af832698f5d868ab25b66b674"},
+    {file = "feco3-0.5.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5ffbae08353754bb4491a4021c78ef8c8e5f9859ffb37b5649ccd8a99de9a091"},
+    {file = "feco3-0.5.0-cp39-cp39-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:62d6abcea5c4bba20763042a43fd62de74ca9002e15b881eaace46400f3e2cd0"},
+    {file = "feco3-0.5.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f24338e56d50a551435ccbd0b2df81f2e766051f138d1eb95869b34aa3a592d7"},
+    {file = "feco3-0.5.0-cp39-none-win32.whl", hash = "sha256:95d3f56766307a7786f50267d2a9dac4292fdc72f11a2374c287ecf7fe846d2e"},
+    {file = "feco3-0.5.0-cp39-none-win_amd64.whl", hash = "sha256:a5b56e94cb94cbe5551ead9dba554de2a5022f15e7cf790281d151808aba93f0"},
+    {file = "feco3-0.5.0-pp310-pypy310_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:c0710deabbee2e1705c983a07a4fe08e25086519ff27cf3b003e88daec8c0b94"},
+    {file = "feco3-0.5.0-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:833d9e6bbf404c5e3d1c503d8ef5d12675116a8a61bd4041562fce1acc51f4c5"},
+    {file = "feco3-0.5.0-pp310-pypy310_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:bb29a893c489d572df9c890a5bdd0f3b9bf31e6c2ffe9f0b988f9443b2026bba"},
+    {file = "feco3-0.5.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9687c516ae6855419c844e21a947dd7138844548a02f6ffd88746c5c0a4f9edd"},
+    {file = "feco3-0.5.0-pp37-pypy37_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:a672b72b21e8d1b68374d9df116df9fe72772ede4ae9282aeed035046e535726"},
+    {file = "feco3-0.5.0-pp37-pypy37_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b428654373db9de89977e7396166b2359b675df4fc3d14ec5f7ec1a76a6f9fbd"},
+    {file = "feco3-0.5.0-pp37-pypy37_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:9f2c3c3e2fd30ab0064dbd1cd29c8b0d47b2e3f0e6a600d5c955a82a1ec87583"},
+    {file = "feco3-0.5.0-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:3cbb389acbc44dc077099ab65cf18c9705f0e416d42222e6ab15511dca039e5d"},
+    {file = "feco3-0.5.0-pp38-pypy38_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:31861fe8e9d1f4338b9c097c86f13623c539ba3efdac6a2d11457c61a72ed2fa"},
+    {file = "feco3-0.5.0-pp38-pypy38_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8c23367e66a9ef8fbd4b8cc5aaf66c8639ea60a2fd55b99258a434dfeb4313a2"},
+    {file = "feco3-0.5.0-pp38-pypy38_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:5bce1ab7613765513ef7cc4ee50260981669699f23bde4c36814ede15cf85694"},
+    {file = "feco3-0.5.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e6509c195161d17e9912661218490ee793b2aa3259fd55695d752d1b79452494"},
+    {file = "feco3-0.5.0-pp39-pypy39_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:960a863ad1f2c8c1fbcbf6b4a78bfe6ad67c26713da8c374176e75cf2dd1a531"},
+    {file = "feco3-0.5.0-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ae8be0e5e6e5c73902f98f5691a9a26bd2c6133221ca41b592b08149af8598fc"},
+    {file = "feco3-0.5.0-pp39-pypy39_pp73-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:e669a2b784fa9d55354415e5fa589dfb415db9b7e17d6456cc6c53dd5908c839"},
+    {file = "feco3-0.5.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cbdf2688984af655f47b649cfcc8fd79a109ec3d9c95859d32461e1c210cab92"},
+    {file = "feco3-0.5.0.tar.gz", hash = "sha256:4b1d87542c71b55dab3587dbf65bf821f89242224b32d610ed591421cb057ec6"},
+]
+
+[package.extras]
+arrow = ["pyarrow"]
+
+[[package]]
 name = "idna"
 version = "3.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -519,6 +624,17 @@ MarkupSafe = ">=2.0"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
+
+[[package]]
+name = "jmespath"
+version = "1.0.1"
+description = "JSON Matching Expressions"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980"},
+    {file = "jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe"},
+]
 
 [[package]]
 name = "jsonschema"
@@ -1456,6 +1572,23 @@ files = [
 ]
 
 [[package]]
+name = "s3transfer"
+version = "0.10.3"
+description = "An Amazon S3 Transfer Manager"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "s3transfer-0.10.3-py3-none-any.whl", hash = "sha256:263ed587a5803c6c708d3ce44dc4dfedaab4c1a32e8329bab818933d79ddcf5d"},
+    {file = "s3transfer-0.10.3.tar.gz", hash = "sha256:4f50ed74ab84d474ce614475e0b8d5047ff080810aac5d01ea25231cfc944b0c"},
+]
+
+[package.dependencies]
+botocore = ">=1.33.2,<2.0a.0"
+
+[package.extras]
+crt = ["botocore[crt] (>=1.33.2,<2.0a.0)"]
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -1553,4 +1686,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12,<3.13"
-content-hash = "4d8047d98e42ad940501d0f8495bd5a9e3c8f8fe9e62210a3a4c362ba3bef0ed"
+content-hash = "2259b8bf9c0e4396653c80e80f19f167c649fa53970ba7add512bdd5502ba8b4"
