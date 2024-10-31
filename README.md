@@ -64,20 +64,12 @@ Once installation has completed you can enter the poetry environment.
 poetry shell
 ```
 
-### Download the dataset
+### Download datasets
 
-You can download the dataset, which will be saved in `parquet_files`.
-
-``` bash
-python script/parse.py
-```
-
-### Ingest data to DuckDB
-
-Once the dataset is ready you can ingest them to `us_campaign_finance.duckdb`.
+You can download the dataset, which will be saved in `datarecce-todofec`.
 
 ``` bash
-python script/ingest.py
+python script/sync_raw_data.py
 ```
 
 ### Running dbt
