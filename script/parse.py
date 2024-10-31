@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 
 import boto3
 import pandas as pd
+import polars as pl
 from botocore import UNSIGNED
 from botocore.client import Config
 
@@ -143,7 +144,6 @@ def extract_zip(
 
             # Get the contents of the temporary directory
             temp_contents = os.listdir(temp_extract_dir)
-            print(temp_contents)
 
             if len(temp_contents) == 1 and os.path.isdir(
                 os.path.join(temp_extract_dir, temp_contents[0])
@@ -467,40 +467,64 @@ def parse_electronic_filed_reports(start_date: str = None):
     extract_dir = "downloads/electronic_fec"
     csv_dir = "downloads/electronic_fec_csv"
     parquet_dir = "downloads/electronic_fec_parquet"
+    os.makedirs(parquet_dir, exist_ok=True)
     for zip_file in downloaded_files:
         extract_zip(zip_path=zip_file, extract_dir=extract_dir, delete_zip=False)
 
         fec_files = list_files_by_type(extract_dir, "fec")
+        csv_files_by_form_type = dict()
+        parquet_dfs_by_form_type = dict()
         for fec_file in fec_files:
             try:
-                print(f"Parsing {fec_file}")
                 fec_id = Path(fec_file).stem
                 output_dir = f"{csv_dir}/{fec_id}"
 
                 if not Path(output_dir).exists():
+                    print(f"Parsing {fec_file}")
                     subprocess.run(["fastfec", fec_file, csv_dir])
 
                 csv_files = list_files_by_type(output_dir, "csv")
                 for csv_file in csv_files:
+                    if Path(csv_file).stat().st_size == 0:
+                        continue
+
                     form_type = Path(csv_file).stem
-                    parquet_file = f"{parquet_dir}/{form_type}.parquet"
-
-                    df = pd.read_csv(csv_file)
-                    for column in df.columns:
-                        df[column] = df[column].astype(str)
-                    if not Path(parquet_file).exists():
-                        df.to_parquet(parquet_file)
-                    else:
-                        merged_df = pd.concat([pd.read_parquet(parquet_file), df])
-                        merged_df.to_parquet(parquet_file)
-
-                    print(f"Update {parquet_file}")
+                    if form_type not in csv_files_by_form_type:
+                        csv_files_by_form_type[form_type] = list()
+                    csv_files_by_form_type[form_type].append(csv_file)
 
             except Exception as e:
                 print(f"Error parsing {fec_file}: {e}")
                 pass
 
+        print(f"All FEC files in {zip_file} are parsed")
+        for form_type, csv_files in csv_files_by_form_type.items():
+            csv_df = pl.concat(
+                [
+                    pl.read_csv(
+                        csv_file, infer_schema=False, truncate_ragged_lines=True
+                    )
+                    for csv_file in csv_files
+                ]
+            )
+
+            if form_type not in parquet_dfs_by_form_type:
+                parquet_file = f"{parquet_dir}/{form_type}.parquet"
+                if Path(parquet_file).exists():
+                    parquet_dfs_by_form_type[form_type] = pl.read_parquet(parquet_file)
+                    parquet_dfs_by_form_type[form_type] = pl.concat([parquet_dfs_by_form_type[form_type], csv_df])
+                else:
+                    parquet_dfs_by_form_type[form_type] = csv_df
+            else:
+                parquet_dfs_by_form_type[form_type] = pl.concat([parquet_dfs_by_form_type[form_type], csv_df])
+
+        print("Start updating Parquet files")
+        for form_type, df in parquet_dfs_by_form_type.items():
+            parquet_file = f"{parquet_dir}/{form_type}.parquet"
+            df.write_parquet(parquet_file)
+            print(f"Update {parquet_file}")
+
 
 os.makedirs(PARQUERT_DIR, exist_ok=True)
 
-parse_electronic_filed_reports("20241020")
+parse_electronic_filed_reports("20241026")

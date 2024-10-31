@@ -11,6 +11,7 @@ logs/
 .python-version
 
 # data
+datarecce-todofec
 parquet_files
 downloads
 *.duckdb
