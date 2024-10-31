@@ -72,6 +72,37 @@ You can download the dataset, which will be saved in `datarecce-todofec`.
 python script/sync_raw_data.py
 ```
 
+The reports are stored in Parquet files and the FEC files are stored by form
+type in directory of each date. For example:
+
+``` bash
+datarecce-todofec/
+├── all_candidates_2024.parquet
+├── candidate_committee_linkage_2024.parquet
+├── candidate_master_2024.parquet
+├── committee_master_2024.parquet
+├── electronic_filed_reports
+│   ├── 20241025
+│   │   ├── F1A.parquet
+│   │   ├── F1MN.parquet
+│   │   ├── F1N.parquet
+│   │   ├── F1S.parquet
+│   │   ├── F24A.parquet
+│   │   ├── F24N.parquet
+│   │   ├── F2A.parquet
+│   │   ├── F2N.parquet
+│   │   ├── F2S.parquet
+│   │   ├── F3A.parquet
+│   │   ├── F3LN.parquet
+│   │   ├── F3N.parquet
+│   │   ├── F3PA.parquet
+│   │   ├── F3PN.parquet
+│   │   ├── F3PZ1.parquet
+│   │   ├── F3PZ2.parquet
+```
+
+Check out more form types [here](https://www.fec.gov/data/browse-data/?tab=bulk-data)
+
 ### Running dbt
 
 Once you've updated any models you can run dbt _within the poetry environment_ by simply calling:
