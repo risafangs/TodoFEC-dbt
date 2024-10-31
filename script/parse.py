@@ -466,14 +466,19 @@ def parse_electronic_filed_reports(start_date: str = None):
 
     extract_dir = "downloads/electronic_fec"
     csv_dir = "downloads/electronic_fec_csv"
-    parquet_dir = "downloads/electronic_fec_parquet"
-    os.makedirs(parquet_dir, exist_ok=True)
     for zip_file in downloaded_files:
+        date = Path(zip_file).stem
+        parquet_dir = f"downloads/electronic_fec_parquet/{date}"
+        if Path(parquet_dir).exists():
+            print(f"Skip {zip_file}, parsed in {parquet_dir}")
+            continue
+
         extract_zip(zip_path=zip_file, extract_dir=extract_dir, delete_zip=False)
+
+        os.makedirs(parquet_dir, exist_ok=True)
 
         fec_files = list_files_by_type(extract_dir, "fec")
         csv_files_by_form_type = dict()
-        parquet_dfs_by_form_type = dict()
         for fec_file in fec_files:
             try:
                 fec_id = Path(fec_file).stem
@@ -499,32 +504,18 @@ def parse_electronic_filed_reports(start_date: str = None):
 
         print(f"All FEC files in {zip_file} are parsed")
         for form_type, csv_files in csv_files_by_form_type.items():
-            csv_df = pl.concat(
+            parquet_file = f"{parquet_dir}/{form_type}.parquet"
+            pl.concat(
                 [
-                    pl.read_csv(
+                    pl.scan_csv(
                         csv_file, infer_schema=False, truncate_ragged_lines=True
                     )
                     for csv_file in csv_files
                 ]
-            )
-
-            if form_type not in parquet_dfs_by_form_type:
-                parquet_file = f"{parquet_dir}/{form_type}.parquet"
-                if Path(parquet_file).exists():
-                    parquet_dfs_by_form_type[form_type] = pl.read_parquet(parquet_file)
-                    parquet_dfs_by_form_type[form_type] = pl.concat([parquet_dfs_by_form_type[form_type], csv_df])
-                else:
-                    parquet_dfs_by_form_type[form_type] = csv_df
-            else:
-                parquet_dfs_by_form_type[form_type] = pl.concat([parquet_dfs_by_form_type[form_type], csv_df])
-
-        print("Start updating Parquet files")
-        for form_type, df in parquet_dfs_by_form_type.items():
-            parquet_file = f"{parquet_dir}/{form_type}.parquet"
-            df.write_parquet(parquet_file)
-            print(f"Update {parquet_file}")
+            ).collect().write_parquet(parquet_file)
+            print(f"Saved {parquet_file}")
 
 
 os.makedirs(PARQUERT_DIR, exist_ok=True)
 
-parse_electronic_filed_reports("20241026")
+parse_electronic_filed_reports("20241025")
