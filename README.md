@@ -79,3 +79,12 @@ Once you've updated any models you can run dbt _within the poetry environment_ b
 ```bash
 dbt run
 ```
+
+## How to Contribute
+
+We’d love your help! Here’s how to get started:
+
+1. **Fork the repo** to your GitHub account.
+2. **Make your changes** in a new branch.
+3. **Open a PR** when you're ready for review.
+4. **Share your progress** or ask questions in dbt Slack `#tools-recce`.
