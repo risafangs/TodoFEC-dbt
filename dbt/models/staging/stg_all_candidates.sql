@@ -1,1 +1,1 @@
-select * from {{ source('parquet', 'raw_all_candidates') }}
+select * from {{ source('s3_datarecce_todofec', 'raw_all_candidates') }}
