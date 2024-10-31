@@ -1,4 +1,7 @@
-PARQUERT_DIR = "parquet_files"
+DATARECCE_TODOFEC_S3_BUCKET_NAME = "datarecce-todofec"
+DATARECCE_TODOFEC_S3_REGION_NAME = "us-east-1"
+RAW_DATA_DIR = "datarecce-todofec"
+PARQUERT_DIR = "datarecce-todofec"
 DUCKDB_PATH = "us_campaign_finance.duckdb"
 
 BASE_URL = "https://www.fec.gov/files/bulk-downloads/"
