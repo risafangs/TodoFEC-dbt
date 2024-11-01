@@ -1,3 +1,4 @@
+from botocore.utils import has_header
 import requests
 import os
 import tempfile
@@ -12,7 +13,6 @@ from typing import Optional
 from urllib.parse import urlparse
 
 import boto3
-import pandas as pd
 import polars as pl
 from botocore import UNSIGNED
 from botocore.client import Config
@@ -236,15 +236,17 @@ def save_in_parquet(input_path, column_names, output_path):
     """
     try:
         # Read CSV file with specified columns
-        df = pd.read_csv(
-            input_path,
-            names=column_names,
-            dtype=str,  # Treat all columns as strings
-            skip_blank_lines=True,
+        df = pl.read_csv(
+            source=input_path,
+            has_header=False,
+            new_columns=column_names,
+            separator="|",
+            infer_schema=False,
+            quote_char=None,
         )
 
         # Save as parquet
-        df.to_parquet(output_path, index=False)
+        df.write_parquet(output_path)
         return True
 
     except Exception as e:
@@ -518,4 +520,5 @@ def parse_electronic_filed_reports(start_date: str = None):
 
 os.makedirs(PARQUERT_DIR, exist_ok=True)
 
-parse_electronic_filed_reports("20241025")
+# parse_electronic_filed_reports("20241025")
+parse_statements_and_summary()
