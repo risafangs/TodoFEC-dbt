@@ -2,7 +2,6 @@ DATARECCE_TODOFEC_S3_BUCKET_NAME = "datarecce-todofec"
 DATARECCE_TODOFEC_S3_REGION_NAME = "us-east-1"
 RAW_DATA_DIR = "datarecce-todofec"
 PARQUERT_DIR = "datarecce-todofec"
-DUCKDB_PATH = "us_campaign_finance.duckdb"
 
 BASE_URL = "https://www.fec.gov/files/bulk-downloads/"
 S3_BUCKET_NAME = "cg-519a459a-0ea3-42c2-b7bc-fa1143481f74"
@@ -11,6 +10,7 @@ ELECTRONIC_FEC_PREFIX = "bulk-downloads/electronic/"
 
 METADATA = [
     dict(category="all_candidates", year="2024", remainder="2024/weball24.zip"),
+    dict(category="all_candidates", year="2020", remainder="2020/weball20.zip"),
     dict(category="candidate_master", year="2024", remainder="2024/cn24.zip"),
     dict(
         category="candidate_committee_linkage", year="2024", remainder="2024/ccl24.zip"
@@ -18,6 +18,29 @@ METADATA = [
     dict(category="house_senate", year="2024", remainder="2024/webl24.zip"),
     dict(category="committee_master", year="2024", remainder="2024/cm24.zip"),
     dict(category="pac_summary", year="2024", remainder="2024/webk24.zip"),
+    # Skip this one, the zip file too large (2.86 GB)
+    # dict(
+    #     category="contributions_by_individuals",
+    #     year="2024",
+    #     remainder="2024/indiv24.zip",
+    # ),
+    dict(
+        category="contributions_from_committees_to_candidates",
+        year="2024",
+        remainder="2024/pas224.zip",
+    ),
+    dict(
+        category="contributions_from_committees_to_candidates",
+        year="2020",
+        remainder="2020/pas220.zip",
+    ),
+    # Skip this one, the zip file too large (320.7 MB)
+    # dict(
+    #     category="transactions_between_committees",
+    #     year="2024",
+    #     remainder="2024/oth24.zip",
+    # ),
+    dict(category="operating_expenditures", year="2024", remainder="2024/oppexp24.zip"),
 ]
 
 COLUMNS = {
@@ -156,5 +179,102 @@ COLUMNS = {
         "PTY_COORD_EXP",
         "NONFED_SHARE_EXP",
         "CVG_END_DT",
+    ],
+    "contributions_by_individuals": [
+        "CMTE_ID",
+        "AMNDT_IND",
+        "RPT_TP",
+        "TRANSACTION_PGI",
+        "IMAGE_NUM",
+        "TRANSACTION_TP",
+        "ENTITY_TP",
+        "NAME",
+        "CITY",
+        "STATE",
+        "ZIP_CODE",
+        "EMPLOYER",
+        "OCCUPATION",
+        "TRANSACTION_DT",
+        "TRANSACTION_AMT",
+        "OTHER_ID",
+        "TRAN_ID",
+        "FILE_NUM",
+        "MEMO_CD",
+        "MEMO_TEXT",
+        "SUB_ID",
+    ],
+    "contributions_from_committees_to_candidates": [
+        "CMTE_ID",
+        "AMNDT_IND",
+        "RPT_TP",
+        "TRANSACTION_PGI",
+        "IMAGE_NUM",
+        "TRANSACTION_TP",
+        "ENTITY_TP",
+        "NAME",
+        "CITY",
+        "STATE",
+        "ZIP_CODE",
+        "EMPLOYER",
+        "OCCUPATION",
+        "TRANSACTION_DT",
+        "TRANSACTION_AMT",
+        "OTHER_ID",
+        "CAND_ID",
+        "TRAN_ID",
+        "FILE_NUM",
+        "MEMO_CD",
+        "MEMO_TEXT",
+        "SUB_ID",
+    ],
+    "transactions_between_committees": [
+        "CMTE_ID",
+        "AMNDT_IND",
+        "RPT_TP",
+        "TRANSACTION_PGI",
+        "IMAGE_NUM",
+        "TRANSACTION_TP",
+        "ENTITY_TP",
+        "NAME",
+        "CITY",
+        "STATE",
+        "ZIP_CODE",
+        "EMPLOYER",
+        "OCCUPATION",
+        "TRANSACTION_DT",
+        "TRANSACTION_AMT",
+        "OTHER_ID",
+        "TRAN_ID",
+        "FILE_NUM",
+        "MEMO_CD",
+        "MEMO_TEXT",
+        "SUB_ID",
+    ],
+    "operating_expenditures": [
+        "CMTE_ID",
+        "AMNDT_IND",
+        "RPT_YR",
+        "RPT_TP",
+        "IMAGE_NUM",
+        "LINE_NUM",
+        "FORM_TP_CD",
+        "SCHED_TP_CD",
+        "NAME",
+        "CITY",
+        "STATE",
+        "ZIP_CODE",
+        "TRANSACTION_DT",
+        "TRANSACTION_AMT",
+        "TRANSACTION_PGI",
+        "PURPOSE",
+        "CATEGORY",
+        "CATEGORY_DESC",
+        "MEMO_CD",
+        "MEMO_TEXT",
+        "ENTITY_TP",
+        "SUB_ID",
+        "FILE_NUM",
+        "TRAN_ID",
+        "BACK_REF_TRAN_ID",
     ],
 }

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "todofec"
+name = "todofec-dbt"
 version = "0.1.0"
 description = ""
 authors = ["DataRecce"]
@@ -13,6 +13,7 @@ pyarrow = "^18.0.0"
 duckdb = "^1.1.2"
 boto3 = "^1.35.51"
 polars = "^1.12.0"
+recce = "^0.39.0"
 
 
 [build-system]
