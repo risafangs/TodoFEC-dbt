@@ -34,7 +34,7 @@ METADATA = [
         year="2020",
         remainder="2020/pas220.zip",
     ),
-    # Skip this one, the zip file too large (320.7 BB)
+    # Skip this one, the zip file too large (320.7 MB)
     # dict(
     #     category="transactions_between_committees",
     #     year="2024",
