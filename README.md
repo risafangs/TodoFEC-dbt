@@ -53,7 +53,7 @@ To make and track your changes, first fork this repository to your own GitHub ac
 
 ``` bash
   git clone https://github.com/your-username/TodoFEC-dbt.git
-  cd TodoFEC
+  cd TodoFEC-dbt
 ```
 
 #### System Prequisites
