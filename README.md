@@ -115,7 +115,8 @@ dbt run
 
 We’d love your help! Here’s how to get started:
 
-1. **Fork the repo** to your GitHub account.
-2. **Make your changes** in a new branch.
-3. **Open a PR** when you're ready for review.
-4. **Share your progress** or ask questions in dbt Slack `#tools-recce`.
+1. **Create an issue** and describe what you want to changes; OR **find an issue** that you want to work on.
+2. **Fork the repo** to your GitHub account.
+3. **Make your changes** in a new branch.
+4. **Open a PR** when you're ready for review.
+5. **Share your progress** or ask questions in dbt Slack `#tools-recce`.
