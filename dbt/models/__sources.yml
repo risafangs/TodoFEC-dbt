@@ -8,12 +8,32 @@ sources:
       - name: raw_all_candidates
         description: One record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
         config:
-          external_location: "read_parquet(['datarecce-todofec/all_candidates_2024.parquet'])"
+          external_location: "read_parquet(['s3://datarecce-todofec/all_candidates_2024.parquet'])"
+      - name: raw_candidate_master
+        description: ""
+        config:
+          external_location: "read_parquet(['s3://datarecce-todofec/candidate_master_2024.parquet'])"
+      - name: raw_candidate_committee_linkage
+        description: Information linking the candidate's information to information about his or her committee.
+        config:
+          external_location: "read_parquet(['s3://datarecce-todofec/candidate_committee_linkage_2024.parquet'])"
+      - name: raw_house_senate
+        description: ""
+        config:
+          external_location: "read_parquet(['s3://datarecce-todofec/house_senate_2024.parquet'])"
+      - name: raw_committee_master
+        description: ""
+        config:
+          external_location: "read_parquet(['s3://datarecce-todofec/committee_master_2024.parquet'])"
       - name: raw_pac_summary
         description: Gives overall receipts and disbursements for each PAC and party committee registered with the commission, along with a breakdown of overall receipts by source and totals for contributions to other committees, independent expenditures made and other information.
         config:
-          external_location: "read_parquet(['datarecce-todofec/pac_summary_2024.parquet'])"
-      - name: raw_sa13
-        description: Electronic filed reports (Form SA13)
+          external_location: "read_parquet(['s3://datarecce-todofec/pac_summary_2024.parquet'])"
+      - name: raw_contributions_from_committees_to_candidates
+        description: "The contributions from committees to candidates file is a subset of the itemized records (OTH) file and contains each contribution or independent expenditure made by a: PAC, Party ,committee, Candidate committee, and Other federal committee and given to a candidate during the two-year election cycle."
         config:
-          external_location: "read_parquet(['datarecce-todofec/electronic_filed_reports/*/SA13.parquet'])"
+          external_location: "read_parquet(['s3://datarecce-todofec/contributions_from_committees_to_candidates_2024.parquet'])"
+      - name: raw_operating_expenditures
+        description: ""
+        config:
+          external_location: "read_parquet(['s3://datarecce-todofec/operating_expenditures_2024.parquet'])"

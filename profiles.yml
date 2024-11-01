@@ -10,6 +10,6 @@ us_campaign_finance:
       type: duckdb
       path: us_campaign_finance.duckdb
       schema: main
-      threads: 4
+      threads: 1
 
   target: dev
