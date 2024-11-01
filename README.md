@@ -65,7 +65,6 @@ We prepare some [FEC Data Browse at](https://www.fec.gov/data/browse-data/?tab=b
   ```
   select count(*) from read_parquet('s3://datarecce-todofec/pac_summary_2024.parquet');
   ```
-  select CAND_NAME, sum(TTL_INDIV_CONTRIB) from from read_parquet('s3://datarecce-todofec/all_candidates_2024.parquet') group by CAND_NAME
 
 ### Download dataset
 
