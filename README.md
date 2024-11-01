@@ -1,54 +1,50 @@
-# Standardized Data Project Using US Election Campaign Finance Dataset
+# TodoFEC-dbt
+This project aligns with the [**TodoFEC**](https://github.com/DataRecce/TodoFEC) initiative to create a standardized set of data tasks for comparing data processing frameworks. Our focus is on developing dbt models that transform and analyze the U.S. Election Campaign Finance dataset to provide insights into campaign contributions, expenditure patterns, and donor networks.
 
-In the front-end world, **TodoMVC** is a well-known example for comparing JavaScript frameworks by implementing the same to-do app in multiple frameworks. This project seeks to bring a similar concept to data processing and analytics.
-
-We aim to create a standardized set of tasks using the **US Election Campaign Finance Dataset**, enabling users to compare different tools and frameworks for data processing and analysis.
-
-If you're interested in contributing, check out the detailed narrative and sign-up section in the [project narrative document](https://docs.google.com/document/d/1K44XHV_NpfUe2R2PVBJNRkT-arZtKp4_SCzer8Nmg-Q/edit?tab=t.0).
-
-## Why the US Election Campaign Finance Dataset?
-
-1. **Rich Data**: The dataset includes numbers, categories, dates, and text, ideal for testing different data frameworks.
-2. **Public and Relevant**: A public dataset with significant real-world importance for understanding money in politics.
-3. **Scalable**: Large enough to test performance and scalability.
-4. **Complex Tasks**: Suitable for advanced tasks like network analysis, forecasting, and natural language processing.
-
-## Project Objectives
-
-### Proposed Data Tasks
-
-- Load the .fec dataset and make it accessible.
-- Basic dimension modeling.
-- Basic aggregated results.
-- Add a semantic model.
-- Visualize results.
-- Implement CI/CD.
-
-### Proposed Analytics Tasks
-
-- Identify PACs, their funders, and expenditures in swing states for both sides.
-- Analyze campaign expenditures by candidate and locale.
-- Track top industries donating to candidates by party.
-- Explore amounts raised, expenditures by date, and behavioral patterns of funders.
-
-## Resources & References
-
-- [FEC Data Browse](https://www.fec.gov/data/browse-data/?tab=bulk-data)
-- [Mining FEC Data PDF](https://s3.amazonaws.com/ire16/campaign-finance/MiningFECData.pdf)
-- [FEC Parser to Arrow & Parquet](https://github.com/NickCrews/feco3)
-- [Sample Analytics Project](https://medium.com/@harshithayentra.1997/federal-election-commission-fec-prediction-analysis-27cde08f1531)
 
 ## Quickstart
+- Explore data by Query FEC Data on S3 with DuckDB
+- Once you decide what changes you want to make, you can download the dataset and make dbt model changes. 
 
-### System Prequisites
+### Query FEC Data on S3 with DuckDB
+The [FEC data](https://www.fec.gov/data/browse-data/?tab=bulk-data) for this project is available as Parquet files in an [**S3 bucket**](https://us-east-1.console.aws.amazon.com/s3/buckets/datarecce-todofec?bucketType=general&region=us-east-1&tab=objects#), allowing direct querying without downloading. You can use DuckDB to query the data directly.
 
+1. Install duckdb
+``` bash
+   pip install duckdb
+```
+2. Open duckdb
+``` bash
+   duckdb
+```
+3. Run a Query: Use the following command to query the Parquet file directly from S3
+``` bash
+  select count(*) from read_parquet('s3://datarecce-todofec/pac_summary_2024.parquet');
+```
+
+### Get Ready to Make dbt Model Changes
+#### Download dataset
+If you decide to make model changes, you can either selectively download specific files you need from our S3 bucket or download the entire dataset.
+- Selective Download: Visit the [**S3 bucket**](https://us-east-1.console.aws.amazon.com/s3/buckets/datarecce-todofec?bucketType=general&region=us-east-1&tab=objects#) to download only the files relevant to your analysis.
+- Download All Data: To download all available files at once, use the script provided (detailed below).
+
+#### Fork This Repository
+To make and track your changes, first fork this repository to your own GitHub account. This will create a personal copy that you can modify.
+
+1. Fork the Repository: Click "Fork" at the top of this GitHub page.
+2. Clone Your Fork:
+``` bash
+  git clone https://github.com/your-username/TodoFEC.git
+  cd TodoFEC
+```
+
+#### System Prequisites
 Before you begin you'll need the following on your system:
-
 - Python >=3.12 (see [here](https://www.python.org/downloads/))
 - Python Poetry >= 1.8 (see [here](https://pypi.org/project/poetry/))
 - git (see [here](https://github.com/git-guides/install-git))
 
-### Setup dependencies
+#### Setup dependencies
 
 Install the python dependencies
 
@@ -56,7 +52,7 @@ Install the python dependencies
 poetry install
 ```
 
-### Using the poetry environment
+#### Using the poetry environment
 
 Once installation has completed you can enter the poetry environment.
 
@@ -64,14 +60,13 @@ Once installation has completed you can enter the poetry environment.
 poetry shell
 ```
 
-### Download datasets
+#### Download datasets
 
 You can download the dataset, which will be saved in `datarecce-todofec`.
 
 ``` bash
 python script/sync_raw_data.py
 ```
-
 The reports are stored in Parquet files and the FEC files are stored by form
 type in directory of each date. For example:
 
@@ -110,12 +105,3 @@ Once you've updated any models you can run dbt _within the poetry environment_ b
 ```bash
 dbt run
 ```
-
-## How to Contribute
-
-We’d love your help! Here’s how to get started:
-
-1. **Fork the repo** to your GitHub account.
-2. **Make your changes** in a new branch.
-3. **Open a PR** when you're ready for review.
-4. **Share your progress** or ask questions in dbt Slack `#tools-recce`.
