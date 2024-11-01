@@ -38,9 +38,38 @@ If you're interested in contributing, check out the detailed narrative and sign-
 - [FEC Parser to Arrow & Parquet](https://github.com/NickCrews/feco3)
 - [Sample Analytics Project](https://medium.com/@harshithayentra.1997/federal-election-commission-fec-prediction-analysis-27cde08f1531)
 
+## How to Contribute
+We’d love your help! Here’s how to get started:
+- Use Discussion of the repo to post ideas.
+- Create an issue descripting what you will work on; OR Find an issue to work on. 
+  
+Steps: 
+1. **Fork the repo** to your GitHub account.
+2. **Make your changes** in a new branch.
+3. **Open a PR** when you're ready for review.
+
 ## Quickstart
 
-### System Prequisites
+### Query dataset on S3 by duckdb
+We prepare some [FEC Data Browse at](https://www.fec.gov/data/browse-data/?tab=bulk-data) at [**s3 bucket**](https://us-east-1.console.aws.amazon.com/s3/buckets/datarecce-todofec?bucketType=general&region=us-east-1&tab=objects#) as parquet files. You can use duckdb to query these parquet directly without download dataset. 
+
+1. Install duckdb
+   ```
+   pip install duckdb
+   ```
+2. use duckdb
+   ```
+   duckdb
+   ```
+3. run query to access the parquet on S3 directly, e.g. 
+  ```
+  select count(*) from read_parquet('s3://datarecce-todofec/pac_summary_2024.parquet');
+  ```
+  select CAND_NAME, sum(TTL_INDIV_CONTRIB) from from read_parquet('s3://datarecce-todofec/all_candidates_2024.parquet') group by CAND_NAME
+
+### Download dataset
+
+#### System Prequisites
 
 Before you begin you'll need the following on your system:
 
@@ -48,7 +77,7 @@ Before you begin you'll need the following on your system:
 - Python Poetry >= 1.8 (see [here](https://pypi.org/project/poetry/))
 - git (see [here](https://github.com/git-guides/install-git))
 
-### Setup dependencies
+#### Setup dependencies
 
 Install the python dependencies
 
@@ -56,7 +85,7 @@ Install the python dependencies
 poetry install
 ```
 
-### Using the poetry environment
+#### Using the poetry environment
 
 Once installation has completed you can enter the poetry environment.
 
@@ -64,7 +93,7 @@ Once installation has completed you can enter the poetry environment.
 poetry shell
 ```
 
-### Download datasets
+#### Download datasets
 
 You can download the dataset, which will be saved in `datarecce-todofec`.
 
@@ -103,19 +132,10 @@ datarecce-todofec/
 
 Check out more form types [here](https://www.fec.gov/data/browse-data/?tab=bulk-data)
 
-### Running dbt
+#### Running dbt
 
 Once you've updated any models you can run dbt _within the poetry environment_ by simply calling:
 
 ```bash
 dbt run
 ```
-
-## How to Contribute
-
-We’d love your help! Here’s how to get started:
-
-1. **Fork the repo** to your GitHub account.
-2. **Make your changes** in a new branch.
-3. **Open a PR** when you're ready for review.
-4. **Share your progress** or ask questions in dbt Slack `#tools-recce`.
