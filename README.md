@@ -33,14 +33,13 @@ Here are the S3 URIs of available dataset:
 
 ```
 s3://datarecce-todofec/all_candidates_2024.parquet
-s3://datarecce-todofec/pac_summary_2024.parquet
-s3://datarecce-todofec/house_senate_2024.parquet
-s3://datarecce-todofec/committee_master_2024.parquet
-s3://datarecce-todofec/operating_expenditures_2024.parquet
-s3://datarecce-todofec/transactions_between_committees_2024.parquet
-s3://datarecce-todofec/contributions_from_committees_to_candidates_2024.parquet
 s3://datarecce-todofec/candidate_master_2024.parquet
 s3://datarecce-todofec/candidate_committee_linkage_2024.parquet
+s3://datarecce-todofec/house_senate_2024.parquet
+s3://datarecce-todofec/committee_master_2024.parquet
+s3://datarecce-todofec/pac_summary_2024.parquet
+s3://datarecce-todofec/contributions_from_committees_to_candidates_2024.parquet
+s3://datarecce-todofec/operating_expenditures_2024.parquet
 ```
 
 ### Get Ready to Make dbt Model Changes
