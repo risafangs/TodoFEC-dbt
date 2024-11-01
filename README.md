@@ -29,7 +29,7 @@ The [FEC data](https://www.fec.gov/data/browse-data/?tab=bulk-data) for this pro
   select count(*) from read_parquet('s3://datarecce-todofec/pac_summary_2024.parquet');
 ```
 
-Here are available S3 datasets:
+Here are the S3 URIs of available dataset:
 
 ```
 s3://datarecce-todofec/all_candidates_2024.parquet
