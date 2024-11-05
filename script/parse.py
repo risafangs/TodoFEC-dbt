@@ -21,7 +21,7 @@ from config import (
     PARQUERT_DIR,
     BASE_URL,
     METADATA,
-    COLUMNS,
+    SCHEMAS,
     S3_BUCKET_NAME,
     S3_REGION_NAME,
     ELECTRONIC_FEC_PREFIX,
@@ -221,14 +221,14 @@ def list_files_by_type(directory, file_type):
         return []
 
 
-def save_in_parquet(input_path, column_names, output_path):
+def save_in_parquet(input_path, schema, output_path):
     """
     Read a text file as CSV with specified columns and save as parquet.
     All columns are treated as strings.
 
     Args:
         input_path (str): Path to the input text file
-        column_names (list): List of column names
+        schema (dict): The SchemaDict
         output_path (str): Path where parquet file should be saved
 
     Returns:
@@ -238,11 +238,11 @@ def save_in_parquet(input_path, column_names, output_path):
         # Read CSV file with specified columns
         df = pl.read_csv(
             source=input_path,
+            schema=schema,
             has_header=False,
-            new_columns=column_names,
             separator="|",
-            infer_schema=False,
             quote_char=None,
+            truncate_ragged_lines=True,
         )
 
         # Save as parquet
@@ -443,9 +443,9 @@ def parse_statements_and_summary():
         txt_files = list_files_by_type(extracted_path, "txt")
 
         # Convert and save in Parquet
-        columns = COLUMNS[category]
+        schema = SCHEMAS[category]
         parquet_file = f"{PARQUERT_DIR}/{category}_{year}.parquet"
-        save_in_parquet(txt_files[0], columns, parquet_file)
+        save_in_parquet(txt_files[0], schema, parquet_file)
         print(f"Successfully save {parquet_file}")
 
         # Clean up temporary files when done
