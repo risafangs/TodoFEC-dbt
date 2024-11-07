@@ -14,15 +14,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Setup Python, Poetry and Dependencies
+        uses: packetcoders/action-setup-cache-python-poetry@main
         with:
-          python-version: "3.12.x"
+          python-version: 3.12
+          poetry-version: 1.8.3
 
-      - name: Install dependencies
+      - name: Install dbt packages
         run: |
-          pip install -r requirements.txt
-          dbt deps
+          poetry run dbt deps
 
       - name: Checkout main branch
         uses: actions/checkout@v4
@@ -32,9 +32,9 @@ jobs:
 
       - name: Prepare dbt Base environment
         run: |
-          dbt seed -t prod
-          dbt build -t prod --target-path target-base
-          dbt docs generate -t prod --target-path target-base
+          poetry run dbt seed -t prod
+          poetry run dbt build -t prod --target-path target-base
+          poetry run dbt docs generate -t prod --target-path target-base
 
       - name: Checkout back PR branch
         uses: actions/checkout@v4
@@ -43,16 +43,16 @@ jobs:
 
       - name: Prepare dbt Current environment
         run: |
-          dbt seed
-          dbt build
-          dbt docs generate
+          poetry run dbt seed
+          poetry run dbt build
+          poetry run dbt docs generate
 
       - name: Run Recce CI
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           RECCE_STATE_PASSWORD: ${{ vars.RECCE_STATE_PASSWORD}}
         run: |
-          recce run --cloud
+          poetry run recce run --cloud
 
       - name: Upload Recce State File
         uses: actions/upload-artifact@v4
@@ -70,7 +70,7 @@ jobs:
         run: |
           set -eo pipefail
 
-          recce summary --cloud > recce_summary.md
+          poetry run recce summary --cloud > recce_summary.md
 
           # Add next steps message
           cat << EOF >> recce_summary.md
