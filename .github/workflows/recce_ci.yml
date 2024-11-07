@@ -24,25 +24,16 @@ jobs:
         run: |
           poetry run dbt deps
 
-      - name: Checkout main branch
-        uses: actions/checkout@v4
-        with:
-          ref: main
-          fetch-depth: 0
-
       - name: Prepare dbt Base environment
         run: |
+          git checkout main
           poetry run dbt seed -t prod
           poetry run dbt build -t prod --target-path target-base
           poetry run dbt docs generate -t prod --target-path target-base
 
-      - name: Checkout back PR branch
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Prepare dbt Current environment
         run: |
+          git checkout -
           poetry run dbt seed
           poetry run dbt build
           poetry run dbt docs generate
