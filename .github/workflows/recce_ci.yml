@@ -34,8 +34,8 @@ jobs:
       - name: Prepare dbt Current environment
         run: |
           git checkout -
-          poetry run dbt seed
-          poetry run dbt build
+          poetry run dbt clone --state target-base --full-refresh
+          poetry run dbt build -s state:modified+ --state target-base
           poetry run dbt docs generate
 
       - name: Run Recce CI
