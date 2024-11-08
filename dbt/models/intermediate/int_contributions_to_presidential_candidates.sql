@@ -7,16 +7,16 @@ with presidential_candidates as (
 
 
 select
-    pc.CAND_ID,
-    pc.CAND_NAME,
-    pc.CAND_PTY_AFFILIATION,
-    cm.CMTE_ID,
-    cm.CMTE_NM,
-    cm.CMTE_PTY_AFFILIATION,
-    cc.TRAN_ID,
-    cc.TRANSACTION_TP,
-    cc.STATE,
-    cc.TRANSACTION_AMT
+    pc.cand_id,
+    pc.cand_name,
+    pc.cand_pty_affiliation,
+    cm.cmte_id,
+    cm.cmte_nm,
+    cm.cmte_pty_affiliation,
+    cc.tran_id,
+    cc.transaction_tp,
+    cc.state,
+    cc.transaction_amt
 from presidential_candidates pc
 left join {{ ref('stg_contributions_from_committees_to_candidates') }} cc
     on pc.cand_id = cc.cand_id
