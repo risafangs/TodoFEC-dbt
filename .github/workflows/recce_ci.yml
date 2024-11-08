@@ -2,7 +2,10 @@ name: Recce CI
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - "dbt/**"
 
 jobs:
   check-pull-request:
