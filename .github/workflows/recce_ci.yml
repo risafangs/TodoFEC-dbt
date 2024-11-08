@@ -48,14 +48,6 @@ jobs:
         run: |
           poetry run recce run --cloud
 
-      - name: Upload Recce State File
-        uses: actions/upload-artifact@v4
-        id: duckdb-uploader
-        with:
-          name: duckdb
-          path: |
-            jaffle_shop.duckdb
-
       - name: Prepare Recce Summary
         id: recce-summary
         env:
