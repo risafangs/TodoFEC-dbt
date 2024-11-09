@@ -1,5 +1,5 @@
 ---
-title: TodoEFC-dbt
+title: TodoEFC
 ---
 
 <ButtonGroup name=transaction_tp title="Expenditure Type:">
@@ -57,7 +57,6 @@ title: TodoEFC-dbt
   from from_duckdb.advocacy_opposition_by_state_candidate
   where TRANSACTION_TP = '${inputs.transaction_tp}'
     and is_swing_state = ${inputs.is_swing_state}
-  order by CAND_NAME
 ```
 
 <BarChart
@@ -65,10 +64,10 @@ title: TodoEFC-dbt
     x=STATE
     y={inputs.display_value}
     series=CAND_NAME
-    type=stacked100
+    type=grouped
     swapXY=true
-    colorPalette={[
-        '#ef4444',
-        '#3b82f6',
-        ]}
+    seriesColors={{
+        'TRUMP, DONALD J.': '#ef4444',
+        'HARRIS, KAMALA': '#3b82f6',
+    }}
 />
