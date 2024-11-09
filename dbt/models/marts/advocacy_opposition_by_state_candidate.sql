@@ -2,6 +2,8 @@ select
     cand_name,
     transaction_tp,
     state,
+    state in (select abbreviation from {{ ref('swing_states') }}
+    ) as is_swing_state,
     count(distinct cmte_id) as cmte_count,
     count(*) as transaction_count,
     sum(transaction_amt) as total_amt
