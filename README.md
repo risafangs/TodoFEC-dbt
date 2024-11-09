@@ -62,6 +62,7 @@ Before you begin you'll need the following on your system:
 
 - Python >=3.12 (see [here](https://www.python.org/downloads/))
 - Python Poetry >= 1.8 (see [here](https://pypi.org/project/poetry/))
+- NPM >= 7 (see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm))
 - git (see [here](https://github.com/git-guides/install-git))
 
 #### Setup dependencies
@@ -89,3 +90,24 @@ Once you've updated any models you can run dbt _within the poetry environment_ b
 ```bash
 dbt run
 ```
+
+### Visualize with Evidence
+
+#### Setup Evidence
+``` bash
+npm --prefix ./evidence install
+```
+
+#### Prepare data
+``` bash
+dbt seed -t prod   # Optional
+dbt build -t prod  # Optional
+npm --prefix ./evidence run sources
+```
+
+#### Launch Evidence
+``` bash
+npm --prefix ./evidence run dev
+```
+
+![evidence](./gif/advocacy_opposition.gif)

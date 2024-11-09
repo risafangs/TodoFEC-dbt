@@ -1,0 +1,4 @@
+name: from_duckdb
+type: duckdb
+options:
+  filename: ../../../us_campaign_finance.duckdb

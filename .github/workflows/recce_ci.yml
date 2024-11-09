@@ -2,7 +2,10 @@ name: Recce CI
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - "dbt/**"
 
 jobs:
   check-pull-request:
@@ -44,14 +47,6 @@ jobs:
           RECCE_STATE_PASSWORD: ${{ vars.RECCE_STATE_PASSWORD}}
         run: |
           poetry run recce run --cloud
-
-      - name: Upload Recce State File
-        uses: actions/upload-artifact@v4
-        id: duckdb-uploader
-        with:
-          name: duckdb
-          path: |
-            jaffle_shop.duckdb
 
       - name: Prepare Recce Summary
         id: recce-summary
