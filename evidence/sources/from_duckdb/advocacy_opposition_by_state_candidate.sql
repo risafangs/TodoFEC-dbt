@@ -1,0 +1,1 @@
+select * from advocacy_opposition_by_state_candidate
