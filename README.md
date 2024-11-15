@@ -42,6 +42,8 @@ s3://datarecce-todofec/contributions_from_committees_to_candidates_2024.parquet
 s3://datarecce-todofec/operating_expenditures_2024.parquet
 ```
 
+Check out [TodoFEC-parser](https://github.com/DataRecce/TodoFEC-parser) to see how the parquet files are prepared.
+
 ### Get Ready to Make dbt Model Changes
 
 #### Fork This Repository
@@ -80,8 +82,6 @@ Once installation has completed you can enter the poetry environment.
 ```bash
 poetry shell
 ```
-
-Check out more form types [here](https://www.fec.gov/data/browse-data/?tab=bulk-data)
 
 ### Running dbt
 
