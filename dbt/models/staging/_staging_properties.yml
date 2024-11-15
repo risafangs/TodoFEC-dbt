@@ -1,0 +1,718 @@
+version: 2
+
+models:
+  - name: stg_all_candidates
+    description: |
+        "A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) 
+         raise contributions or make expenditures that exceed $5,000."
+    columns:
+      - name: cand_id
+        data_type: varchar
+        description: |
+         "A unique identifier assigned to each candidate registered with the FEC. If a person runs for several offices, that person will have separate candidate IDs for each office.
+          First character indicates office - [P]residential, [H]ouse, [S]enate].
+          Second character is the last digit of the two-year period the ID was created.
+          Third and fourth is the candidate state. Presidential IDs don't have state.
+          Fifth and sixth is the district when the candidate first ran. This does not change if the candidate/member's district changes during re-districting.
+          Presidential IDs don't have districts. The rest is sequence."
+
+      - name: cand_name
+        data_type: varchar
+        description: ""
+
+      - name: cand_ici
+        data_type: varchar
+        description: ""
+
+      - name: pty_cd
+        data_type: varchar
+        description: "Three-letter code for the party affiliated with a candidate or committee. For example, DEM for Democratic Party and REP for Republican Party."
+
+      - name: cand_pty_affiliation
+        data_type: varchar
+        description: ""
+
+      - name: ttl_receipts
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: trans_from_auth
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_disb
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: trans_to_auth
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_bop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_cop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loans
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_loans
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: debts_owed_by
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_indiv_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_office_st
+        data_type: varchar
+        description: ""
+
+      - name: cand_office_district
+        data_type: varchar
+        description: "Two-digit US House distirict of the office the candidate is running for. Presidential, Senate and House at-large candidates will have District 00."
+
+      - name: spec_election
+        data_type: varchar
+        description: ""
+
+      - name: prim_election
+        data_type: varchar
+        description: ""
+
+      - name: run_election
+        data_type: varchar
+        description: ""
+
+      - name: gen_election
+        data_type: varchar
+        description: ""
+
+      - name: gen_election_precent
+        data_type: decimal(7,4)
+        description: ""
+
+      - name: other_pol_cmte_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: pol_pty_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cvg_end_dt
+        data_type: varchar
+        description: ""
+
+      - name: indiv_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cmte_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+  - name: stg_candidate_committee_linkage
+    description: ""
+    columns:
+      - name: cand_id
+        data_type: varchar
+        description: ""
+
+      - name: cand_election_yr
+        data_type: varchar
+        description: ""
+
+      - name: fec_election_yr
+        data_type: varchar
+        description: ""
+
+      - name: cmte_id
+        data_type: varchar
+        description: ""
+
+      - name: cmte_tp
+        data_type: varchar
+        description: ""
+
+      - name: cmte_dsgn
+        data_type: varchar
+        description: ""
+
+      - name: linkage_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_candidate_master
+    description: ""
+    columns:
+      - name: cand_id
+        data_type: varchar
+        description: ""
+
+      - name: cand_name
+        data_type: varchar
+        description: ""
+
+      - name: cand_pty_affiliation
+        data_type: varchar
+        description: ""
+
+      - name: cand_election_yr
+        data_type: varchar
+        description: ""
+
+      - name: cand_office_st
+        data_type: varchar
+        description: ""
+
+      - name: cand_office
+        data_type: varchar
+        description: ""
+
+      - name: cand_office_district
+        data_type: varchar
+        description: ""
+
+      - name: cand_ici
+        data_type: varchar
+        description: ""
+
+      - name: cand_status
+        data_type: varchar
+        description: ""
+
+      - name: cand_pcc
+        data_type: varchar
+        description: ""
+
+      - name: cand_st1
+        data_type: varchar
+        description: ""
+
+      - name: cand_st2
+        data_type: varchar
+        description: ""
+
+      - name: cand_city
+        data_type: varchar
+        description: ""
+
+      - name: cand_st
+        data_type: varchar
+        description: ""
+
+      - name: cand_zip
+        data_type: varchar
+        description: ""
+
+  - name: stg_committee_master
+    description: ""
+    columns:
+      - name: cmte_id
+        data_type: varchar
+        description: ""
+
+      - name: cmte_nm
+        data_type: varchar
+        description: ""
+
+      - name: tres_nm
+        data_type: varchar
+        description: ""
+
+      - name: cmte_st1
+        data_type: varchar
+        description: ""
+
+      - name: cmte_st2
+        data_type: varchar
+        description: ""
+
+      - name: cmte_city
+        data_type: varchar
+        description: ""
+
+      - name: cmte_st
+        data_type: varchar
+        description: ""
+
+      - name: cmte_zip
+        data_type: varchar
+        description: ""
+
+      - name: cmte_dsgn
+        data_type: varchar
+        description: ""
+
+      - name: cmte_tp
+        data_type: varchar
+        description: ""
+
+      - name: cmte_pty_affiliation
+        data_type: varchar
+        description: ""
+
+      - name: cmte_filing_freq
+        data_type: varchar
+        description: ""
+
+      - name: org_tp
+        data_type: varchar
+        description: ""
+
+      - name: connected_org_nm
+        data_type: varchar
+        description: ""
+
+      - name: cand_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_contributions_from_committees_to_candidates
+    description: ""
+    columns:
+      - name: cmte_id
+        data_type: varchar
+        description: ""
+
+      - name: amndt_ind
+        data_type: varchar
+        description: ""
+
+      - name: rpt_tp
+        data_type: varchar
+        description: ""
+
+      - name: transaction_pgi
+        data_type: varchar
+        description: ""
+
+      - name: image_num
+        data_type: varchar
+        description: ""
+
+      - name: transaction_tp
+        data_type: varchar
+        description: ""
+
+      - name: entity_tp
+        data_type: varchar
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+      - name: city
+        data_type: varchar
+        description: ""
+
+      - name: state
+        data_type: varchar
+        description: ""
+
+      - name: zip_code
+        data_type: varchar
+        description: ""
+
+      - name: employer
+        data_type: varchar
+        description: ""
+
+      - name: occupation
+        data_type: varchar
+        description: ""
+
+      - name: transaction_dt
+        data_type: varchar
+        description: ""
+
+      - name: transaction_amt
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_id
+        data_type: varchar
+        description: ""
+
+      - name: cand_id
+        data_type: varchar
+        description: ""
+
+      - name: tran_id
+        data_type: varchar
+        description: ""
+
+      - name: file_num
+        data_type: varchar
+        description: ""
+
+      - name: memo_cd
+        data_type: varchar
+        description: ""
+
+      - name: memo_text
+        data_type: varchar
+        description: ""
+
+      - name: sub_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_house_senate
+    description: ""
+    columns:
+      - name: cand_id
+        data_type: varchar
+        description: ""
+
+      - name: cand_name
+        data_type: varchar
+        description: ""
+
+      - name: cand_ici
+        data_type: varchar
+        description: ""
+
+      - name: pty_cd
+        data_type: varchar
+        description: ""
+
+      - name: cand_pty_affiliation
+        data_type: varchar
+        description: ""
+
+      - name: ttl_receipts
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: trans_from_auth
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_disb
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: trans_to_auth
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_bop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_cop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loans
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_loans
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: debts_owed_by
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_indiv_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_office_st
+        data_type: varchar
+        description: ""
+
+      - name: cand_office_district
+        data_type: varchar
+        description: ""
+
+      - name: spec_election
+        data_type: varchar
+        description: ""
+
+      - name: prim_election
+        data_type: varchar
+        description: ""
+
+      - name: run_election
+        data_type: varchar
+        description: ""
+
+      - name: gen_election
+        data_type: varchar
+        description: ""
+
+      - name: gen_election_precent
+        data_type: decimal(7,4)
+        description: ""
+
+      - name: other_pol_cmte_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: pol_pty_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cvg_end_dt
+        data_type: varchar
+        description: ""
+
+      - name: indiv_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cmte_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+  - name: stg_operating_expenditures
+    description: ""
+    columns:
+      - name: cmte_id
+        data_type: varchar
+        description: ""
+
+      - name: amndt_ind
+        data_type: varchar
+        description: ""
+
+      - name: rpt_yr
+        data_type: varchar
+        description: ""
+
+      - name: rpt_tp
+        data_type: varchar
+        description: ""
+
+      - name: image_num
+        data_type: varchar
+        description: ""
+
+      - name: line_num
+        data_type: varchar
+        description: ""
+
+      - name: form_tp_cd
+        data_type: varchar
+        description: ""
+
+      - name: sched_tp_cd
+        data_type: varchar
+        description: ""
+
+      - name: name
+        data_type: varchar
+        description: ""
+
+      - name: city
+        data_type: varchar
+        description: ""
+
+      - name: state
+        data_type: varchar
+        description: ""
+
+      - name: zip_code
+        data_type: varchar
+        description: ""
+
+      - name: transaction_dt
+        data_type: varchar
+        description: ""
+
+      - name: transaction_amt
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: transaction_pgi
+        data_type: varchar
+        description: ""
+
+      - name: purpose
+        data_type: varchar
+        description: ""
+
+      - name: category
+        data_type: varchar
+        description: ""
+
+      - name: category_desc
+        data_type: varchar
+        description: ""
+
+      - name: memo_cd
+        data_type: varchar
+        description: ""
+
+      - name: memo_text
+        data_type: varchar
+        description: ""
+
+      - name: entity_tp
+        data_type: varchar
+        description: ""
+
+      - name: sub_id
+        data_type: varchar
+        description: ""
+
+      - name: file_num
+        data_type: varchar
+        description: ""
+
+      - name: tran_id
+        data_type: varchar
+        description: ""
+
+      - name: back_ref_tran_id
+        data_type: varchar
+        description: ""
+
+  - name: stg_pac_summary
+    description: ""
+    columns:
+      - name: cmte_id
+        data_type: varchar
+        description: ""
+
+      - name: cmte_nm
+        data_type: varchar
+        description: ""
+
+      - name: cmte_tp
+        data_type: varchar
+        description: ""
+
+      - name: cmte_dsgn
+        data_type: varchar
+        description: ""
+
+      - name: cmte_filing_freq
+        data_type: varchar
+        description: ""
+
+      - name: ttl_receipts
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: trans_from_aff
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: indv_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_pol_cmte_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_contrib
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loans
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_loans_received
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ttl_disb
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: tranf_to_aff
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: indv_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: other_pol_cmte_refunds
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cand_loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: loan_repay
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_bop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: coh_cop
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: debts_owed_by
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: nonfed_trans_received
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: contrib_to_other_cmte
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: ind_exp
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: pty_coord_exp
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: nonfed_share_exp
+        data_type: decimal(14,2)
+        description: ""
+
+      - name: cvg_end_dt
+        data_type: varchar
+        description: ""
