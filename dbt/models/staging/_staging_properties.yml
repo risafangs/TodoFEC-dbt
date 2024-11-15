@@ -133,7 +133,7 @@ models:
         description: ""
 
   - name: stg_candidate_committee_linkage
-    description: ""
+    description: "Bridge data source connecting Candidate ID to Committee ID"
     columns:
       - name: cand_id
         data_type: varchar
@@ -159,12 +159,12 @@ models:
         data_type: varchar
         description: ""
 
-      - name: linkage_id
+      - name: linkage_id # unique key
         data_type: varchar
         description: ""
 
   - name: stg_candidate_master
-    description: ""
+    description: "Detailed records for each candidate, including address, office they are running for, party affiliation, etc."
     columns:
       - name: cand_id
         data_type: varchar
@@ -200,7 +200,12 @@ models:
 
       - name: cand_status
         data_type: varchar
-        description: ""
+        description: |
+        "One-letter code explaining if the candidate is:
+        - C present candidate
+        - F future candidate
+        - N not yet a candidate
+        - P prior candidate"
 
       - name: cand_pcc
         data_type: varchar
@@ -227,11 +232,13 @@ models:
         description: ""
 
   - name: stg_committee_master
-    description: ""
+    description: |
+    "All FEC filers, even if not registered as a committee, are included. Officially, committees include the committees and organizations that file with the FEC. Several different types of organizations file financial reports with the FEC:  
+    Campaign committees authorized by particular candidates to raise and spend funds in their campaigns. Non-party committees (e.g., PACs), some of which may be sponsored by corporations, unions, trade or membership groups, etc. Political party committees at the national, state, and local levels. Groups and individuals making only independent expenditures Corporations, unions, and other organizations making internal communicationsThe committee endpoints primarily use data from FEC registration Form 1 and Form 2."
     columns:
       - name: cmte_id
         data_type: varchar
-        description: ""
+        description: "A unique identifier assigned to each committee or filer registered with the FEC. In general a committee id begins with the letter C which is followed by eight digits."
 
       - name: cmte_nm
         data_type: varchar
