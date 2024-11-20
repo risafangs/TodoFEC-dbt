@@ -80,11 +80,11 @@ models:
 
       - name: cand_office_st
         data_type: varchar
-        description: ""{{ doc('cand_office_st') }}""
+        description: "{{ doc('cand_office_st') }}"
 
       - name: cand_office_district
         data_type: varchar
-        description: ""{{ doc('office_district') }}""
+        description: "{{ doc('office_district') }}"
 
       - name: spec_election
         data_type: varchar
