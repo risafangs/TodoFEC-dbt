@@ -3,18 +3,17 @@ version: 2
 models:
   - name: stg_all_candidates
     description: |
-        "A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) 
-         raise contributions or make expenditures that exceed $5,000."
+        A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) raise contributions or make expenditures that exceed $5,000. The all candidate summary file contains one record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
     columns:
       - name: cand_id
         data_type: varchar
         description: |
-         "A unique identifier assigned to each candidate registered with the FEC. If a person runs for several offices, that person will have separate candidate IDs for each office.
-          First character indicates office - [P]residential, [H]ouse, [S]enate].
-          Second character is the last digit of the two-year period the ID was created.
-          Third and fourth is the candidate state. Presidential IDs don't have state.
-          Fifth and sixth is the district when the candidate first ran. This does not change if the candidate/member's district changes during re-districting.
-          Presidential IDs don't have districts. The rest is sequence."
+            A unique identifier assigned to each candidate registered with the FEC. If a person runs for several offices, that person will have separate candidate IDs for each office.
+            First character indicates office - [P]residential, [H]ouse, [S]enate].
+            Second character is the last digit of the two-year period the ID was created.
+            Third and fourth is the candidate state. Presidential IDs don't have state.
+            Fifth and sixth is the district when the candidate first ran. This does not change if the candidate/member's district changes during re-districting.
+            Presidential IDs don't have districts. The rest is sequence.
 
       - name: cand_name
         data_type: varchar
@@ -164,7 +163,7 @@ models:
         description: ""
 
   - name: stg_candidate_master
-    description: "Detailed records for each candidate, including address, office they are running for, party affiliation, etc."
+    description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
     columns:
       - name: cand_id
         data_type: varchar
@@ -201,11 +200,11 @@ models:
       - name: cand_status
         data_type: varchar
         description: |
-        "One-letter code explaining if the candidate is:
-        - C present candidate
-        - F future candidate
-        - N not yet a candidate
-        - P prior candidate"
+            One-letter code explaining if the candidate is:
+            - C present candidate
+            - F future candidate
+            - N not yet a candidate
+            - P prior candidate
 
       - name: cand_pcc
         data_type: varchar
@@ -232,9 +231,7 @@ models:
         description: ""
 
   - name: stg_committee_master
-    description: |
-    "All FEC filers, even if not registered as a committee, are included. Officially, committees include the committees and organizations that file with the FEC. Several different types of organizations file financial reports with the FEC:  
-    Campaign committees authorized by particular candidates to raise and spend funds in their campaigns. Non-party committees (e.g., PACs), some of which may be sponsored by corporations, unions, trade or membership groups, etc. Political party committees at the national, state, and local levels. Groups and individuals making only independent expenditures Corporations, unions, and other organizations making internal communicationsThe committee endpoints primarily use data from FEC registration Form 1 and Form 2."
+    description: "The committee master file contains one record for each committee registered with the Federal Election Commission. This includes federal political action committees and party committees, campaign committees for presidential, house and senate candidates, as well as groups or organizations who are spending money for or against candidates for federal office."
     columns:
       - name: cmte_id
         data_type: varchar
@@ -297,7 +294,7 @@ models:
         description: ""
 
   - name: stg_contributions_from_committees_to_candidates
-    description: ""
+    description: "Contains records of contributions from Committees to Candidates at sub ID level."
     columns:
       - name: cmte_id
         data_type: varchar
@@ -383,12 +380,12 @@ models:
         data_type: varchar
         description: ""
 
-      - name: sub_id
+      - name: sub_id # unique key
         data_type: varchar
         description: ""
 
   - name: stg_house_senate
-    description: ""
+    description: "Shows total aggregated contributions to Congressional candidates. One record per Congressional candidate."
     columns:
       - name: cand_id
         data_type: varchar
@@ -511,7 +508,7 @@ models:
         description: ""
 
   - name: stg_operating_expenditures
-    description: ""
+    description: "A master file (oppexp) listing committees' operating expenditures, which are found on Schedule B."
     columns:
       - name: cmte_id
         data_type: varchar
@@ -614,7 +611,7 @@ models:
         description: ""
 
   - name: stg_pac_summary
-    description: ""
+    description: "This file gives overall receipts and disbursements for each PAC and party committee registered with the commission, along with a breakdown of overall receipts by source and totals for contributions to other committees, independent expenditures made and other information."
     columns:
       - name: cmte_id
         data_type: varchar
