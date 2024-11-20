@@ -3,17 +3,12 @@ version: 2
 models:
   - name: stg_all_candidates
     description: |
-        A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) raise contributions or make expenditures that exceed $5,000. The all candidate summary file contains one record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
+        A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) raise contributions 
+        or make expenditures that exceed $5,000. The all candidate summary file contains one record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
     columns:
       - name: cand_id
         data_type: varchar
-        description: |
-            A unique identifier assigned to each candidate registered with the FEC. If a person runs for several offices, that person will have separate candidate IDs for each office.
-            First character indicates office - [P]residential, [H]ouse, [S]enate].
-            Second character is the last digit of the two-year period the ID was created.
-            Third and fourth is the candidate state. Presidential IDs don't have state.
-            Fifth and sixth is the district when the candidate first ran. This does not change if the candidate/member's district changes during re-districting.
-            Presidential IDs don't have districts. The rest is sequence.
+        description: "{{ doc('cand_id') }}"
 
       - name: cand_name
         data_type: varchar
@@ -21,15 +16,15 @@ models:
 
       - name: cand_ici
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_ici') }}"
 
       - name: pty_cd
         data_type: varchar
-        description: "Three-letter code for the party affiliated with a candidate or committee. For example, DEM for Democratic Party and REP for Republican Party."
+        description: ""
 
       - name: cand_pty_affiliation
         data_type: varchar
-        description: ""
+        description: "{{ doc('pty_affiliation') }}"
 
       - name: ttl_receipts
         data_type: decimal(14,2)
@@ -85,11 +80,11 @@ models:
 
       - name: cand_office_st
         data_type: varchar
-        description: ""
+        description: ""{{ doc('cand_office_st') }}""
 
       - name: cand_office_district
         data_type: varchar
-        description: "Two-digit US House distirict of the office the candidate is running for. Presidential, Senate and House at-large candidates will have District 00."
+        description: ""{{ doc('office_district') }}""
 
       - name: spec_election
         data_type: varchar
@@ -136,7 +131,7 @@ models:
     columns:
       - name: cand_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_id') }}"
 
       - name: cand_election_yr
         data_type: varchar
@@ -148,7 +143,7 @@ models:
 
       - name: cmte_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_id') }}"
 
       - name: cmte_tp
         data_type: varchar
@@ -163,11 +158,12 @@ models:
         description: ""
 
   - name: stg_candidate_master
-    description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
+    description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared 
+        on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
     columns:
       - name: cand_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_id') }}"
 
       - name: cand_name
         data_type: varchar
@@ -175,67 +171,65 @@ models:
 
       - name: cand_pty_affiliation
         data_type: varchar
-        description: ""
+        description: "{{ doc('pty_affiliation') }}"
 
       - name: cand_election_yr
         data_type: varchar
-        description: ""
+        description: "Candidate's election year from a Statement of Candidacy or state ballot list"
 
       - name: cand_office_st
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_office_st') }}"
 
       - name: cand_office
         data_type: varchar
-        description: ""
+        description: |
+            H = House  
+            P = President  
+            S = Senate
 
       - name: cand_office_district
         data_type: varchar
-        description: ""
+        description: "{{ doc('office_district') }}"
 
       - name: cand_ici
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_ici') }}"
 
       - name: cand_status
         data_type: varchar
-        description: |
-            One-letter code explaining if the candidate is:
-            - C present candidate
-            - F future candidate
-            - N not yet a candidate
-            - P prior candidate
+        description: "{{ doc('cand_status') }}"
 
       - name: cand_pcc
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_pcc') }}"
 
       - name: cand_st1
         data_type: varchar
-        description: ""
+        description: "Mailing address - street"
 
       - name: cand_st2
         data_type: varchar
-        description: ""
+        description: "Mailing address - street2"
 
       - name: cand_city
         data_type: varchar
-        description: ""
+        description: "Mailing address - city"
 
       - name: cand_st
         data_type: varchar
-        description: ""
+        description: "Mailing address - state"
 
       - name: cand_zip
         data_type: varchar
-        description: ""
+        description: "Mailing address - ZIP code"
 
   - name: stg_committee_master
     description: "The committee master file contains one record for each committee registered with the Federal Election Commission. This includes federal political action committees and party committees, campaign committees for presidential, house and senate candidates, as well as groups or organizations who are spending money for or against candidates for federal office."
     columns:
       - name: cmte_id
         data_type: varchar
-        description: "A unique identifier assigned to each committee or filer registered with the FEC. In general a committee id begins with the letter C which is followed by eight digits."
+        description: "{{ doc('cmte_id') }}"
 
       - name: cmte_nm
         data_type: varchar
@@ -275,7 +269,7 @@ models:
 
       - name: cmte_pty_affiliation
         data_type: varchar
-        description: ""
+        description: "{{ doc('pty_affiliation') }}"
 
       - name: cmte_filing_freq
         data_type: varchar
@@ -291,14 +285,14 @@ models:
 
       - name: cand_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_id') }}"
 
   - name: stg_contributions_from_committees_to_candidates
     description: "Contains records of contributions from Committees to Candidates at sub ID level."
     columns:
       - name: cmte_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_id') }}"
 
       - name: amndt_ind
         data_type: varchar
@@ -362,7 +356,7 @@ models:
 
       - name: cand_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_id') }}"
 
       - name: tran_id
         data_type: varchar
@@ -389,7 +383,7 @@ models:
     columns:
       - name: cand_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_id') }}"
 
       - name: cand_name
         data_type: varchar
@@ -405,7 +399,7 @@ models:
 
       - name: cand_pty_affiliation
         data_type: varchar
-        description: ""
+        description: "{{ doc('pty_affiliation') }}"
 
       - name: ttl_receipts
         data_type: decimal(14,2)
@@ -465,7 +459,7 @@ models:
 
       - name: cand_office_district
         data_type: varchar
-        description: ""
+        description: "{{ doc('office_district') }}"
 
       - name: spec_election
         data_type: varchar
@@ -512,7 +506,7 @@ models:
     columns:
       - name: cmte_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_id') }}"
 
       - name: amndt_ind
         data_type: varchar
@@ -615,7 +609,7 @@ models:
     columns:
       - name: cmte_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_id') }}"
 
       - name: cmte_nm
         data_type: varchar
@@ -720,3 +714,4 @@ models:
       - name: cvg_end_dt
         data_type: varchar
         description: ""
+
