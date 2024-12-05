@@ -3,8 +3,7 @@ version: 2
 models:
   - name: stg_all_candidates
     description: |
-        A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) raise contributions 
-        or make expenditures that exceed $5,000. The all candidate summary file contains one record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
+        A candidate is an individual seeking nomination for election to a federal office. People become candidates when they (or agents working on their behalf) raise contributions or make expenditures that exceed $5,000. The all candidate summary file contains one record including summary financial information for all candidates who raised or spent money during the period no matter when they are up for election.
     columns:
       - name: cand_id
         data_type: varchar
@@ -158,8 +157,7 @@ models:
         description: ""
 
   - name: stg_candidate_master
-    description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared 
-        on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
+    description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
     columns:
       - name: cand_id
         data_type: varchar
