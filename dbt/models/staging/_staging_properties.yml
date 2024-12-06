@@ -300,27 +300,28 @@ models:
 
       - name: amndt_ind
         data_type: varchar
-        description: ""
+        description: "{{ doc('amndt_ind') }}"
 
       - name: rpt_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('rpt_tp') }}"
 
       - name: transaction_pgi
         data_type: varchar
-        description: ""
+        description: "{{ doc('transaction_pgi') }}"
 
       - name: image_num
         data_type: varchar
-        description: ""
+        description: "{{ doc('image_num') }}"
 
       - name: transaction_tp
         data_type: varchar
-        description: ""
+        description: "Transaction types 24A, 24C, 24E, 24F, 24H, 24K, 24N, 24P, 24R, 24Z are included in the PAS2 file.
+For more information about transaction type codes see this list of transaction type codes: https://www.fec.gov/campaign-finance-data/transaction-type-code-descriptions"
 
       - name: entity_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('entity_tp') }}"
 
       - name: name
         data_type: varchar
@@ -356,7 +357,7 @@ models:
 
       - name: other_id
         data_type: varchar
-        description: ""
+        description: "For contributions from individuals this column is null. For contributions from candidates or other committees this column will contain the recipient's FEC ID."
 
       - name: cand_id
         data_type: varchar
@@ -364,23 +365,23 @@ models:
 
       - name: tran_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('tran_id') }}"
 
       - name: file_num
         data_type: varchar
-        description: ""
+        description: "{{ doc('file_num') }}"
 
       - name: memo_cd
         data_type: varchar
-        description: ""
+        description: "Memo code. 'X' indicates that the amount of the transaction is not incorporated into the total figure disclosed on the detailed summary page of the committee’s report. 'X' may also indicate that the amount was received as part of a joint fundraising transfer or other lump sum contribution required to be attributed to individual contributors. Memo items may be used to denote that a transaction was previously reported or in the case of an independent expenditure, that the amount represents activity that has occurred but has not yet been paid by the committee. When using the bulk data file these memo items should be included in your analysis."
 
       - name: memo_text
         data_type: varchar
-        description: ""
+        description: "A description of the activity. Memo text is available on itemized amounts on Schedules A and B. These transactions are included in the itemization total."
 
       - name: sub_id # unique key
         data_type: varchar
-        description: ""
+        description: "{{ doc('sub_id') }}"
 
   - name: stg_house_senate
     description: "Shows total aggregated contributions to Congressional candidates. One record per Congressional candidate."
@@ -514,7 +515,7 @@ models:
 
       - name: amndt_ind
         data_type: varchar
-        description: ""
+        description: "{{ doc('amndt_ind') }}"
 
       - name: rpt_yr
         data_type: varchar
@@ -522,27 +523,27 @@ models:
 
       - name: rpt_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('rpt_tp') }}"
 
       - name: image_num
         data_type: varchar
-        description: ""
+        description: "{{ doc('image_num') }}"
 
       - name: line_num
         data_type: varchar
-        description: ""
+        description: "Indicates FEC form line number"
 
       - name: form_tp_cd
         data_type: varchar
-        description: ""
+        description: "Indicates FEC Form"
 
       - name: sched_tp_cd
         data_type: varchar
-        description: ""
+        description: "Schedule B - Itemized disbursements"
 
       - name: name
         data_type: varchar
-        description: ""
+        description: "Contributor/Lender/Transfer Name"
 
       - name: city
         data_type: varchar
@@ -566,7 +567,7 @@ models:
 
       - name: transaction_pgi
         data_type: varchar
-        description: ""
+        description: "{{ doc('transaction_pgi') }}"
 
       - name: purpose
         data_type: varchar
@@ -574,39 +575,39 @@ models:
 
       - name: category
         data_type: varchar
-        description: ""
+        description: "Disbursement category code"
 
       - name: category_desc
         data_type: varchar
-        description: ""
+        description: "Disbursement Category Code Description. See link for category codes: https://www.fec.gov/campaign-finance-data/disbursement-category-code-descriptions"
 
       - name: memo_cd
         data_type: varchar
-        description: ""
+        description: "Memo code. 'X' indicates that the amount is NOT to be included in the itemization total."
 
       - name: memo_text
         data_type: varchar
-        description: ""
+        description: "A description of the activity. Memo Text is available on itemized amounts on Schedule B. These transactions are included in the itemization total."
 
       - name: entity_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('entity_tp') }}"
 
       - name: sub_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('sub_id') }}"
 
       - name: file_num
         data_type: varchar
-        description: ""
+        description: "{{ doc('file_num') }}"
 
       - name: tran_id
         data_type: varchar
-        description: ""
+        description: "{{ doc('tran_id') }}"
 
       - name: back_ref_tran_id
         data_type: varchar
-        description: ""
+        description: "ONLY VALID FOR ELECTRONIC FILINGS. Used to associate one transaction with another transaction in the same report (using file number, transaction ID and back reference transaction ID). For example, a credit card payment and the subitemization of specific purchases. The back reference transaction ID of the specific purchases will equal the transaction ID of the payment to the credit card company."
 
   - name: stg_pac_summary
     description: "This file gives overall receipts and disbursements for each PAC and party committee registered with the commission, along with a breakdown of overall receipts by source and totals for contributions to other committees, independent expenditures made and other information."
@@ -718,4 +719,5 @@ models:
       - name: cvg_end_dt
         data_type: varchar
         description: "{{ doc('cvg_end_dt') }}"
+
 
