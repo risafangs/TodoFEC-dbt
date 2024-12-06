@@ -87,23 +87,23 @@ models:
 
       - name: spec_election
         data_type: varchar
-        description: ""
+        description: "Special election status. Election result data included in 1996-2006 files only."
 
       - name: prim_election
         data_type: varchar
-        description: ""
+        description: "Primary election status. Election result data included in 1996-2006 files only."
 
       - name: run_election
         data_type: varchar
-        description: ""
+        description: "Runoff election status. Election result data included in 1996-2006 files only."
 
       - name: gen_election
         data_type: varchar
-        description: ""
+        description: "General election status. Election result data included in 1996-2006 files only."
 
       - name: gen_election_precent
         data_type: decimal(7,4)
-        description: ""
+        description: "General election percent. Election result data included in 1996-2006 files only."
 
       - name: other_pol_cmte_contrib
         data_type: decimal(14,2)
@@ -115,7 +115,7 @@ models:
 
       - name: cvg_end_dt
         data_type: varchar
-        description: ""
+        description: "{{ doc('cvg_end_dt') }}"
 
       - name: indiv_refunds
         data_type: decimal(14,2)
@@ -134,11 +134,11 @@ models:
 
       - name: cand_election_yr
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_election_yr') }}"
 
       - name: fec_election_yr
         data_type: varchar
-        description: ""
+        description: "Active 2-year period."
 
       - name: cmte_id
         data_type: varchar
@@ -146,15 +146,15 @@ models:
 
       - name: cmte_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_tp') }}"
 
       - name: cmte_dsgn
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_dsgn') }}"
 
       - name: linkage_id # unique key
         data_type: varchar
-        description: ""
+        description: "Unique link ID"
 
   - name: stg_candidate_master
     description: "The candidate master file contains one record for each candidate who has either registered with the Federal Election Commission or appeared on a ballot list prepared by a state elections office. Includes address, office they are running for, party affiliation, etc."
@@ -173,7 +173,7 @@ models:
 
       - name: cand_election_yr
         data_type: varchar
-        description: "Candidate's election year from a Statement of Candidacy or state ballot list"
+        description: "{{ doc('cand_election_yr') }}"
 
       - name: cand_office_st
         data_type: varchar
@@ -235,7 +235,7 @@ models:
 
       - name: tres_nm
         data_type: varchar
-        description: ""
+        description: "{{ doc('tres_nm') }}"
 
       - name: cmte_st1
         data_type: varchar
@@ -259,11 +259,11 @@ models:
 
       - name: cmte_dsgn
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_dsgn') }}"
 
       - name: cmte_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_tp') }}"
 
       - name: cmte_pty_affiliation
         data_type: varchar
@@ -271,11 +271,17 @@ models:
 
       - name: cmte_filing_freq
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_filing_freq') }}"
 
       - name: org_tp
         data_type: varchar
-        description: ""
+        description: |
+           C = Corporation  
+           L = Labor organization  
+           M = Membership organization  
+           T = Trade association  
+           V = Cooperative  
+           W = Corporation without capital stock
 
       - name: connected_org_nm
         data_type: varchar
@@ -389,7 +395,7 @@ models:
 
       - name: cand_ici
         data_type: varchar
-        description: ""
+        description: "{{ doc('cand_ici') }}"
 
       - name: pty_cd
         data_type: varchar
@@ -489,7 +495,7 @@ models:
 
       - name: cvg_end_dt
         data_type: varchar
-        description: ""
+        description: "{{ doc('cvg_end_dt') }}"
 
       - name: indiv_refunds
         data_type: decimal(14,2)
@@ -615,15 +621,15 @@ models:
 
       - name: cmte_tp
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_tp') }}"
 
       - name: cmte_dsgn
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_dsgn') }}"
 
       - name: cmte_filing_freq
         data_type: varchar
-        description: ""
+        description: "{{ doc('cmte_filing_freq') }}"
 
       - name: ttl_receipts
         data_type: decimal(14,2)
@@ -711,5 +717,5 @@ models:
 
       - name: cvg_end_dt
         data_type: varchar
-        description: ""
+        description: "{{ doc('cvg_end_dt') }}"
 
